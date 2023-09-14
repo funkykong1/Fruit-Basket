@@ -259,7 +259,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c86f5bf722e5b0e44b9780bfc1f767db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  items: []
+  goodItems:
+  - {fileID: 9147417230908059920, guid: a2f6d2223cbb61b4682de05e9ed31e8d, type: 3}
+  - {fileID: 4682359354004274372, guid: 3b94c98f41aa94b46a12deea19fe5807, type: 3}
+  - {fileID: 529447677182583428, guid: 74427e90d156fae4ba9c47ef305ab9d2, type: 3}
+  - {fileID: 5604553622661389995, guid: f6fb1e2210e0ef3499907eb2ac3a4cc2, type: 3}
+  - {fileID: 882511909754827637, guid: d5d0726f792ee4b49a63f84387a0a447, type: 3}
+  - {fileID: 1389141275894207306, guid: 40a59825c98229943a50b0465755e186, type: 3}
+  - {fileID: 2499478633238455246, guid: 8c3a3d107dfaf5948ba41b8b1416b8f2, type: 3}
+  - {fileID: 2068171520692640919, guid: 7290d6fa2ff6ab54997fbc67d8aaacc0, type: 3}
+  - {fileID: 8004260937224632158, guid: 26ae39dcf755a82449312753bc779e4a, type: 3}
+  - {fileID: 1730337461780652462, guid: ee3b6b314a8fd2248a2e150d7686a29c, type: 3}
+  - {fileID: 6801417387180340127, guid: 5afbd415ade13f148a6a32f126b59358, type: 3}
+  badItems:
+  - {fileID: 3371144793501603744, guid: 4878d496eed62094a8e18b5aa553b674, type: 3}
+  - {fileID: 8592966034117288126, guid: f8881a9f06f9a10498d32431bacff6a4, type: 3}
+  - {fileID: 3901865936597859901, guid: aef1f9d6a7f9af54087dde40bfa89c83, type: 3}
+  - {fileID: 3600836854993469902, guid: ae85bca464aa636448b09b9c95fd90fc, type: 3}
+  - {fileID: 3777283673197042784, guid: 34a3fe9ce6775884e8836d1ebbe013bf, type: 3}
+  - {fileID: 8731088268659243389, guid: 8f8204bcd3f55bf44b4dc37162c30cc0, type: 3}
+  - {fileID: 5919015868023624850, guid: e6c7ac4080ec77e4aa16ac4fe461cf94, type: 3}
+  - {fileID: 8470652457237396617, guid: 9902ef25234c875428421751d86a4a2a, type: 3}
+  activeItems: []
   scoreText: {fileID: 1867362459}
 --- !u!1 &963194225
 GameObject:

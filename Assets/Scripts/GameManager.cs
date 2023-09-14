@@ -5,7 +5,9 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public List<GameObject> items;
+    public GameObject[] goodItems, badItems;
+    public List<GameObject> goodActiveItems, badActiveItems;
+
     int score;
     private float spawnRate;
     public TextMeshProUGUI scoreText;
@@ -22,17 +24,49 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SpawnTarget()
     {
-        while (true) {
+        while (true)
+        {
             yield return new WaitForSeconds(spawnRate);
-            int index = Random.Range(0, items.Count);
-            Instantiate(items[index]);
+            int index = Random.Range(0, goodActiveItems.Count);
+            Instantiate(goodActiveItems[index]);
 
         }
     }
 
-    private void UpdateScore(int scoreToAdd)
+    public void UpdateScore(int scoreToAdd)
     {
         score += scoreToAdd;
         scoreText.text = "Score: " + score;
     }
+
+    public void AddItems(bool good, int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            if(good)
+            {
+                goodActiveItems.Add(goodItems[Random.Range(0, goodItems.Length)]);
+            }
+            else
+            {
+                badActiveItems.Add(badItems[Random.Range(0, badItems.Length)]);
+            }
+        }
+    }
+
+    public void RemoveItems(bool good, int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            if(good)
+            {
+                goodActiveItems.RemoveAt(Random.Range(0, goodActiveItems.Count));
+            }
+            else
+            {
+                badActiveItems.RemoveAt(Random.Range(0, badActiveItems.Count));
+            }
+        }
+    }
+
 }
