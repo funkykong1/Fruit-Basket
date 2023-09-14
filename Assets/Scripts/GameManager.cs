@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class GameManager : MonoBehaviour
@@ -9,7 +10,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> goodActiveItems, badActiveItems;
 
     int score;
-    private float spawnRate;
+    public float spawnRate;
     public TextMeshProUGUI scoreText;
 
 
@@ -18,17 +19,30 @@ public class GameManager : MonoBehaviour
     {
         score = 0;
         UpdateScore(0);
-        StartCoroutine(SpawnTarget());
+    }
 
+    public void StartGame()
+    {
+        AddItems(true, 4);
+        StartCoroutine(SpawnTarget());
     }
 
     IEnumerator SpawnTarget()
     {
-        while (true)
+        while (goodActiveItems.Count > 0)
         {
             yield return new WaitForSeconds(spawnRate);
-            int index = Random.Range(0, goodActiveItems.Count);
-            Instantiate(goodActiveItems[index]);
+            int rand = Random.Range(0, 1);
+            if(rand == 0)
+            {
+                int index = Random.Range(0, goodActiveItems.Count);
+                Instantiate(goodActiveItems[index]);
+            }
+            else
+            {
+                int index = Random.Range(0, badActiveItems.Count);
+                Instantiate(badActiveItems[index]);
+            }
 
         }
     }
