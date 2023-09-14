@@ -53,13 +53,13 @@ public class GameManager : MonoBehaviour
     {
         AddItems(true, 1);
         if(spawnRate > 0.5f)
-            spawnRate =- 0.1f;
+            spawnRate -= 0.1f;
     }
     public void ButtonRemove()
     {
         RemoveItems(true, 1);
-        if(spawnRate < 3)
-            spawnRate =+ 0.1f;
+        if(spawnRate < 4)
+            spawnRate += 0.1f;
     }
 
     public void UpdateScore(int scoreToAdd)
