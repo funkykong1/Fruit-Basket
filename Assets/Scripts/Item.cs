@@ -9,12 +9,12 @@ public class Item : MonoBehaviour
 
     private float maxTorque = 10;
     public float xRange, zRange;
-    private float ySpawnPos = 45;
+    private float ySpawnPos = 40;
 
     void Start()
     {
-        xRange = 17;
-        zRange = 7;
+        xRange = 14;
+        zRange = 6;
         gm = GameObject.Find("Game Manager").GetComponent<GameManager>();   
     
         rb = GetComponent<Rigidbody>();
@@ -23,7 +23,26 @@ public class Item : MonoBehaviour
         transform.position = RandomSpawnPos();
     }
 
+    void FixedUpdate()
+    {
+        int layerMask = 1 << 6;
+        RaycastHit hit;
+        //items fall faster if plr under them
+        Debug.DrawRay(transform.position, (Vector3.down*50), Color.red);
+        if(Physics.Raycast(transform.position, (Vector3.down*50), out hit, Mathf.Infinity, layerMask))
+        {
+            rb.drag = 0;
+            rb.mass = 2;
+        }
+        else
+        {
+            rb.drag = 2;
+            rb.mass = 1;
+        }
+    }
 
+
+    //If hits player
     void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
@@ -35,8 +54,12 @@ public class Item : MonoBehaviour
                 //todo gamee over
                 gm.UpdateScore(-1);
             }
+            Destroy(gameObject);
         }
-
+        else
+        {
+            //some destroy animation. maybe turn the item black 
+        }
     }
 
 
