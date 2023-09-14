@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 3875428998531888757}
   - component: {fileID: 7871740209601406472}
   - component: {fileID: 7428835904431348688}
+  - component: {fileID: 8437914245384566420}
   m_Layer: 0
   m_Name: Burger
-  m_TagString: Untagged
+  m_TagString: Bad Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,3 +113,17 @@ Rigidbody:
   m_Interpolate: 2
   m_Constraints: 10
   m_CollisionDetection: 1
+--- !u!114 &8437914245384566420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3371144793501603744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a4f6711fd0bcf9439d95ac4cabd22f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xRange: 5
+  zRange: 5

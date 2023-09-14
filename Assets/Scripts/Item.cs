@@ -5,10 +5,20 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     private GameManager gm;
-    // Start is called before the first frame update
+    private Rigidbody rb;
+
+    private float maxTorque = 10;
+    public float xRange, zRange;
+    private float ySpawnPos = 35;
+
     void Start()
     {
-        gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        gm = GameObject.Find("Game Manager").GetComponent<GameManager>();   
+    
+        rb = GetComponent<Rigidbody>();
+        rb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
+
+        transform.position = RandomSpawnPos();
     }
 
 
@@ -26,4 +36,14 @@ public class Item : MonoBehaviour
         }
 
     }
+
+
+    float RandomTorque() {
+        return Random.Range(-maxTorque, maxTorque);
+    }
+    Vector3 RandomSpawnPos() {
+        return new Vector3(Random.Range(-xRange, xRange), ySpawnPos, Random.Range(-zRange, zRange));
+    }
+
+
 }

@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public float spawnRate;
     public TextMeshProUGUI scoreText;
 
+    private Transform spawnpos;
+
 
     // Start is called before the first frame update
     void Start()
@@ -36,15 +38,24 @@ public class GameManager : MonoBehaviour
             if(rand == 0)
             {
                 int index = Random.Range(0, goodActiveItems.Count);
-                Instantiate(goodActiveItems[index]);
+                Instantiate(goodActiveItems[index],spawnpos);
             }
             else
             {
                 int index = Random.Range(0, badActiveItems.Count);
-                Instantiate(badActiveItems[index]);
+                Instantiate(badActiveItems[index],spawnpos);
             }
 
         }
+    }
+
+    public void ButtonAdd()
+    {
+        AddItems(true, 1);
+    }
+    public void ButtonRemove()
+    {
+        RemoveItems(true, 1);
     }
 
     public void UpdateScore(int scoreToAdd)
