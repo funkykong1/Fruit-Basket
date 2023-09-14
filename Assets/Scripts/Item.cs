@@ -9,10 +9,12 @@ public class Item : MonoBehaviour
 
     private float maxTorque = 10;
     public float xRange, zRange;
-    private float ySpawnPos = 35;
+    private float ySpawnPos = 45;
 
     void Start()
     {
+        xRange = 17;
+        zRange = 7;
         gm = GameObject.Find("Game Manager").GetComponent<GameManager>();   
     
         rb = GetComponent<Rigidbody>();

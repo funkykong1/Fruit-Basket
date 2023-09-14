@@ -52,10 +52,14 @@ public class GameManager : MonoBehaviour
     public void ButtonAdd()
     {
         AddItems(true, 1);
+        if(spawnRate > 0.5f)
+            spawnRate =- 0.1f;
     }
     public void ButtonRemove()
     {
         RemoveItems(true, 1);
+        if(spawnRate < 3)
+            spawnRate =+ 0.1f;
     }
 
     public void UpdateScore(int scoreToAdd)
