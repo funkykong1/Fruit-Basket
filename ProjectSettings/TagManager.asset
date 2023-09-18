@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Good Item
   - Bad Item
+  - Square
   layers:
   - Default
   - TransparentFX
