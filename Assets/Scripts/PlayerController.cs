@@ -5,17 +5,27 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
+
+    //how smoothly player should go to the next square
     [Range(0, .3f)] [SerializeField] private float movementSmoothing = .05f;
 
-    //scheduled moving
+    //scheduled moving 
     public bool moving;
-    public float rotationSpeed = 1.0f;
+
+    //how fast is rotation
+    public float rotationSpeed = 150f;
+
+    //which square should player go to
     public GameObject targetSquare;
 
+    //where player should be rotating to
     public Quaternion targetRotation;
-
     Vector3 m_EulerAngleVelocity;
+
+    //dir used by LookRotation //velocity used by SmoothDamp
     Vector3 dir, velocity;
+
+
 
     void Awake()
     {
@@ -34,24 +44,20 @@ public class PlayerController : MonoBehaviour
     {
         //handles rotation
         Rotation();
+        
+    }
 
+    void LateUpdate()
+    {
         //if moving queued and not rotating
         if(moving && transform.rotation == targetRotation)
             Move();
-        
     }
 
     //wasd and arrow key rotation
     void Rotation()
     {
-        //simple rotation manipulation
-        var step = rotationSpeed * Time.deltaTime;
-        targetRotation = Quaternion.LookRotation(dir, Vector3.up);
-
-        //rotate towards target direction
-        if(transform.rotation != targetRotation)
-            transform.rotation = Quaternion.RotateTowards(transform.rotation,targetRotation,step);
-
+        
         //ignore input if already moving
         if(!moving)
         {
@@ -82,53 +88,67 @@ public class PlayerController : MonoBehaviour
                 moving = true;
             }
         }
+
+        //simple rotation manipulation
+        var step = rotationSpeed * Time.deltaTime;
+        targetRotation = Quaternion.LookRotation(dir, Vector3.up);
+
+        //rotate towards target direction
+        if(transform.rotation != targetRotation)
+            transform.rotation = Quaternion.RotateTowards(transform.rotation,targetRotation,step);
             
     }
 
     void Move()
     {
+
         //if no square ahead, do not move and let player rotate
         if(targetSquare == null)
+        {
             moving = false;
-
-        if(!moving)
             return;
-        
+        }
+
+        this.GetComponent<BoxCollider>().enabled = false;
+        //avoid editing the player's y value
+        Vector3 mSquare = new Vector3(targetSquare.transform.position.x, transform.position.y, targetSquare.transform.position.z);
+        //Only account for x and z axis for distance calculation
+        Vector3 mPlayer = new Vector3(transform.position.x, targetSquare.transform.position.y, transform.position.z);
 
 
-        var dir = transform.position - targetSquare.transform.position;
-        var distance = Vector3.Distance(this.transform.position, targetSquare.transform.position);
-        
-        //avoid editing the y value
-        Vector3 mPosition = new Vector3(transform.position.x,0,transform.position.y);
-        Vector3 mSquare = new Vector3(targetSquare.transform.position.x,0,targetSquare.transform.position.y);
+        //if remaining distance sufficiently small, stop
+        var distance = Vector3.Distance(transform.position, mSquare);
 
         if(distance > 0.1f)
-            Vector3.SmoothDamp(mPosition, mSquare, ref velocity, movementSmoothing);
+        {
+            transform.position = Vector3.SmoothDamp(transform.position, mSquare, ref velocity, movementSmoothing, 1);
+        }
         else
         {
             moving = false;
+            this.GetComponent<BoxCollider>().enabled = true;
         }
-
-        
-            
+               
     }
 
 
     //detect square infront to move to
     void OnTriggerEnter(Collider other)
     {
+        //if other thing isnt a square or if plr moving, ignore colliders
         if(!other.CompareTag("Square"))
             return;
 
+
         targetSquare = other.gameObject;
         Debug.Log(targetSquare.name+ " found");
+        
     }
 
     //targetSquare nulled if rotating away from one
     void OnTriggerLeave(Collider other)
     {
-        if(other.CompareTag("Square") && transform.rotation != targetRotation)
+        if(other.CompareTag("Square"))
             targetSquare = null;
     }
 
