@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 8937469518113380776}
   - component: {fileID: 1526504169612872987}
   - component: {fileID: 21683006304198964}
+  - component: {fileID: 8213328288784316576}
   m_Layer: 0
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Square
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -83,6 +84,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8213328288784316576
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2205882497800893225}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &6411519822134125761
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +108,6 @@ GameObject:
   - component: {fileID: 2259300937460171076}
   - component: {fileID: 8119943338736123785}
   - component: {fileID: 4002421860289744301}
-  - component: {fileID: 7628614513124062462}
   m_Layer: 0
   m_Name: Plank2 (1)
   m_TagString: Untagged
@@ -165,19 +178,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7628614513124062462
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6411519822134125761}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.0347153, y: 0.033305783, z: 0.14718501}
-  m_Center: {x: 0, y: 0, z: 0.0019713342}
 --- !u!1 &8792489731932014881
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,7 +189,6 @@ GameObject:
   - component: {fileID: 8164712209585509275}
   - component: {fileID: 5107427130802478142}
   - component: {fileID: 6991221198952360180}
-  - component: {fileID: 2384937642886488145}
   m_Layer: 0
   m_Name: Plank2
   m_TagString: Untagged
@@ -260,16 +259,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2384937642886488145
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8792489731932014881}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.0347153, y: 0.033305783, z: 0.14718501}
-  m_Center: {x: 0, y: 0, z: 0.0019713342}

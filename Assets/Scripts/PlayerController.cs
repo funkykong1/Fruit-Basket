@@ -5,17 +5,17 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
-    float horizontalMove, verticalMove;
+    [Range(0, .3f)] [SerializeField] private float movementSmoothing = .05f;
 
-    [Header("Movement Adjust")]
+    //scheduled moving
+    public bool moving;
+    public float rotationSpeed = 1.0f;
+    public GameObject targetSquare;
 
-	[Space]
-    public float speed;
-    [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;
+    public Quaternion targetRotation;
 
-    [Space]
-
-    Vector3 velocity = Vector3.zero;
+    Vector3 m_EulerAngleVelocity;
+    Vector3 dir, velocity;
 
     void Awake()
     {
@@ -25,32 +25,114 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        m_EulerAngleVelocity = new Vector3(0,100,0);
+        dir = Vector3.back;
+        velocity = Vector3.zero;
+    }
+
+    void Update()
+    {
+        //handles rotation
+        Rotation();
+
+        //if moving queued and not rotating
+        if(moving && transform.rotation == targetRotation)
+            Move();
         
     }
 
-    void FixedUpdate()
+    //wasd and arrow key rotation
+    void Rotation()
     {
-        verticalMove = Input.GetAxisRaw("Vertical") * speed;
-        horizontalMove = Input.GetAxisRaw("Horizontal") * speed;
-        MoveHorizontal(horizontalMove * Time.fixedDeltaTime);
-        MoveVertical(verticalMove * Time.fixedDeltaTime);
+        //simple rotation manipulation
+        var step = rotationSpeed * Time.deltaTime;
+        targetRotation = Quaternion.LookRotation(dir, Vector3.up);
+
+        //rotate towards target direction
+        if(transform.rotation != targetRotation)
+            transform.rotation = Quaternion.RotateTowards(transform.rotation,targetRotation,step);
+
+        //ignore input if already moving
+        if(!moving)
+        {
+            if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                dir = Vector3.forward;
+                moving = true;
+            }
+                
+
+            if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                dir = Vector3.left;
+                moving = true;
+            }
+                
+                
+            if(Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                dir = Vector3.back;
+                moving = true;
+            }
+                
+                
+            if(Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                dir = Vector3.right;
+                moving = true;
+            }
+        }
+            
     }
 
-    void MoveHorizontal(float move)
+    void Move()
     {
-        // Move the character by finding the target velocity
-        Vector3 targetVelocity = new Vector3(move * 10f, rb.velocity.y, rb.velocity.z);
-        // And then smoothing it out and applying it to the character
-        rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
+        //if no square ahead, do not move and let player rotate
+        if(targetSquare == null)
+            moving = false;
+
+        if(!moving)
+            return;
+        
+
+
+        var dir = transform.position - targetSquare.transform.position;
+        var distance = Vector3.Distance(this.transform.position, targetSquare.transform.position);
+        
+        //avoid editing the y value
+        Vector3 mPosition = new Vector3(transform.position.x,0,transform.position.y);
+        Vector3 mSquare = new Vector3(targetSquare.transform.position.x,0,targetSquare.transform.position.y);
+
+        if(distance > 0.1f)
+            Vector3.SmoothDamp(mPosition, mSquare, ref velocity, movementSmoothing);
+        else
+        {
+            moving = false;
+        }
+
+        
+            
     }
 
-    void MoveVertical(float move)
+
+    //detect square infront to move to
+    void OnTriggerEnter(Collider other)
     {
-        // Move the character by finding the target velocity
-        Vector3 targetVelocity = new Vector3(rb.velocity.x, rb.velocity.y, move * 10f);
-        // And then smoothing it out and applying it to the character
-        rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
+        if(!other.CompareTag("Square"))
+            return;
+
+        targetSquare = other.gameObject;
+        Debug.Log(targetSquare.name+ " found");
     }
 
-    
+    //targetSquare nulled if rotating away from one
+    void OnTriggerLeave(Collider other)
+    {
+        if(other.CompareTag("Square") && transform.rotation != targetRotation)
+            targetSquare = null;
+    }
+
+
+
+
 }
