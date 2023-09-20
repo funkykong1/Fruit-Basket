@@ -7,37 +7,34 @@ public class Item : MonoBehaviour
     private GameManager gm;
     private Rigidbody rb;
 
+    //how fast it should be allowed to rotate
     private float maxTorque = 10;
-    public float xRange, zRange;
-    private float ySpawnPos = 40;
+    //how high should the thing spawn
+    public float ySpawnPos = 25;
 
     void Start()
     {
-        xRange = 14;
-        zRange = 6;
         gm = GameObject.Find("Game Manager").GetComponent<GameManager>();   
     
         rb = GetComponent<Rigidbody>();
         rb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
-
-        transform.position = RandomSpawnPos();
+        //move the item really high at first
+        transform.position = new Vector3(transform.position.x, ySpawnPos, transform.position.z);
     }
 
     void FixedUpdate()
     {
         int layerMask = 1 << 6;
         RaycastHit hit;
-        //items fall faster if plr under them
+        //items only fall if player under them
         Debug.DrawRay(transform.position, (Vector3.down*50), Color.red);
         if(Physics.Raycast(transform.position, (Vector3.down*50), out hit, Mathf.Infinity, layerMask))
         {
-            rb.drag = 0;
-            rb.mass = 2;
+            rb.useGravity = true;
         }
         else
         {
-            rb.drag = 2;
-            rb.mass = 1;
+            rb.useGravity = false;
         }
     }
 
@@ -51,23 +48,21 @@ public class Item : MonoBehaviour
                 gm.UpdateScore(1);
             else
             {
-                //todo gamee over
+                //todo bad items?
                 gm.UpdateScore(-1);
             }
             Destroy(gameObject);
         }
-        else
+        else if(other.CompareTag("Ground"))
         {
-            //some destroy animation. maybe turn the item black 
+            //some destroy animation. maybe turn the item black
+            
         }
     }
 
 
     float RandomTorque() {
         return Random.Range(-maxTorque, maxTorque);
-    }
-    Vector3 RandomSpawnPos() {
-        return new Vector3(Random.Range(-xRange, xRange), ySpawnPos, Random.Range(-zRange, zRange));
     }
 
 

@@ -7,16 +7,16 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
 
     //how smoothly player should go to the next square
-    [Range(0, .3f)] [SerializeField] private float movementSmoothing = .05f;
+    [Range(0.1f, 0.6f)] [SerializeField] private float movementSmoothing = .05f;
 
     //scheduled moving 
     public bool moving;
 
     //how fast is rotation
-    public float rotationSpeed = 150f;
+    public float rotationSpeed = 150f, moveSpeed = 5f;
 
     //which square should player go to
-    public GameObject targetSquare;
+    public GameObject targetSquare, currentSquare;
 
     //where player should be rotating to
     public Quaternion targetRotation;
@@ -119,9 +119,9 @@ public class PlayerController : MonoBehaviour
         //if remaining distance sufficiently small, stop
         var distance = Vector3.Distance(transform.position, mSquare);
 
-        if(distance > 0.1f)
+        if(distance > 0.05f)
         {
-            transform.position = Vector3.SmoothDamp(transform.position, mSquare, ref velocity, movementSmoothing, 1);
+            transform.position = Vector3.SmoothDamp(transform.position, mSquare, ref velocity, movementSmoothing, moveSpeed);
         }
         else
         {
