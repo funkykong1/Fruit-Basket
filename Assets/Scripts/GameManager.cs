@@ -6,8 +6,14 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Current items in play")]
     public GameObject[] goodItems, badItems;
-    public List<GameObject> goodActiveItems, badActiveItems, allSquares, nextSquares;
+    public List<GameObject> goodActiveItems, badActiveItems, allSquares;
+
+    [Header("List of valid nearby squares")]
+    public List<GameObject> nextSquares;
+    [Header("List of all nearby squares")]
+    public List<GameObject> nearbySquares;
 
     public int score, difficulty;
     public float spawnRate;
@@ -15,8 +21,6 @@ public class GameManager : MonoBehaviour
     private GameObject scanner;
     
     public TextMeshProUGUI scoreText;
-
-    private Transform spawnpos;
 
     void Awake()
     {
@@ -26,6 +30,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        scanner.transform.position = GameObject.Find("Player").transform.position;
         score = 0;
         UpdateScore(0);
         //catalog all squares
@@ -33,11 +38,6 @@ public class GameManager : MonoBehaviour
         {
             allSquares.Add(square);
         }
-    }
-
-    void Update()
-    {
-
     }
 
     public void StartGame()
@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
             //yield return new WaitUntil(() => NextSquare());
 
             //spawn a random thing on it
-            int index = Random.Range(0, goodActiveItems.Count);
+            int index = Random.Range(0, goodItems.Length);
             Instantiate(goodItems[index], square.transform.position, Quaternion.identity);
 
             //move scanner there and wait a bit
@@ -76,31 +76,25 @@ public class GameManager : MonoBehaviour
     {
         //TODO: make all remaining items fall
         //restart button
-        //
     }
 
     //returns a valid square for the next fruit to fall on
     GameObject NextSquare()
     {
-       //choose a square from the active ones (determined by scanner collider)
-    //    foreach (GameObject square in allSquares)
-    //    {
-    //         if(square.GetComponent<Square>().available)
-    //         nextSquares.Add(square);
-    //    }
+        int index;
 
-        //if somehow no valid squares, just pick one close enough to the scanner
-    //    if(nextSquares.Count == 0)
-    //     {
-    //         foreach (GameObject square in allSquares)
-    //         {
-    //             if(Vector3.Distance(scanner.transform.position, square.transform.position) < 3.8f)
-    //             nextSquares.Add(square);
-    //         }
-    //     }
-       //randomly choose the next square to go to
-        int index = Random.Range(0, nextSquares.Count);
-        return nextSquares[index];
+        //randomly choose the next square to go to
+        if(nextSquares.Count > 0)
+        {
+            index = Random.Range(0, nextSquares.Count);
+            return nextSquares[index];
+        }
+        //if there arent any valid squares, just pick one nearby
+        else
+        {
+            index = Random.Range(0, nearbySquares.Count);
+            return nearbySquares[index];
+        }
     }
 
 }

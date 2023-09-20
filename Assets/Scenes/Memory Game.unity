@@ -6257,6 +6257,7 @@ MonoBehaviour:
   badActiveItems: []
   allSquares: []
   nextSquares: []
+  nearbySquares: []
   score: 0
   difficulty: 3
   spawnRate: 4
@@ -10969,7 +10970,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899063899}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.64, y: -2.39, z: -1.59}
+  m_LocalPosition: {x: -20.4, y: -2.39, z: -1.59}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 1007818829}
@@ -12135,22 +12136,6 @@ PrefabInstance:
     - target: {fileID: 1858620722391229346, guid: e51b30ab04e055c41be0fc424caefb49, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1858620722391229350, guid: e51b30ab04e055c41be0fc424caefb49, type: 3}
-      propertyPath: moveSpeed
-      value: 7.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1858620722391229350, guid: e51b30ab04e055c41be0fc424caefb49, type: 3}
-      propertyPath: rotationSpeed
-      value: 175
-      objectReference: {fileID: 0}
-    - target: {fileID: 1858620722391229353, guid: e51b30ab04e055c41be0fc424caefb49, type: 3}
-      propertyPath: m_Interpolate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1858620722391229353, guid: e51b30ab04e055c41be0fc424caefb49, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1858620722391229355, guid: e51b30ab04e055c41be0fc424caefb49, type: 3}
       propertyPath: m_Name

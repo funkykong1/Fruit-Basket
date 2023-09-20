@@ -125,5 +125,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a4f6711fd0bcf9439d95ac4cabd22f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xRange: 0
-  zRange: 0
+  ySpawnPos: 25

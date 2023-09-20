@@ -71,18 +71,24 @@ public class Square : MonoBehaviour
         {
             lr.enabled = false;
         }
-            
+            UpdateLists();
     }
 
-    void LateUpdate()
+    void UpdateLists()
     {
         if(!squareActive)
         {
             if(available && !gm.nextSquares.Contains(this.gameObject))
                 gm.nextSquares.Add(this.gameObject);
+
             else if(!available && gm.nextSquares.Contains(this.gameObject))
                 gm.nextSquares.Remove(this.gameObject);
         }
+        if(available && !gm.nearbySquares.Contains(this.gameObject))
+            gm.nearbySquares.Add(this.gameObject);
+
+        else if(!available && gm.nearbySquares.Contains(this.gameObject))
+            gm.nearbySquares.Remove(this.gameObject);
     }
 
 
