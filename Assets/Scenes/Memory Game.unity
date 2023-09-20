@@ -6259,8 +6259,8 @@ MonoBehaviour:
   nextSquares: []
   nearbySquares: []
   score: 0
-  difficulty: 3
-  spawnRate: 4
+  difficulty: 15
+  spawnRate: 3
   gameActive: 0
   scoreText: {fileID: 34772942}
 --- !u!4 &1007818829

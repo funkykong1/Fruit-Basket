@@ -10,11 +10,18 @@ public class Square : MonoBehaviour
 
     //is this square available as the next waypoint?
     public bool available;
+    //is this square near the scanner?
+    public bool nearby;
 
     private GameObject player;
     private GameObject scanner;
+
+    //debug
     private LineRenderer lr;
     private GameManager gm;
+
+    //vectors which ignore y-values
+    Vector3 mPlayer, mScanner;
     void Awake()
     {
         lr = GetComponent<LineRenderer>();
@@ -24,47 +31,36 @@ public class Square : MonoBehaviour
     }
     void Start()
     {
+        lr.SetPosition(0, transform.position);
         squareActive = false;
         available = false;
-        lr.SetPosition(0, transform.position);
+        nearby = false;
     }
 
 
     void Update()
     {
         // Player and scanner vectors, both ignore Y axis
-        Vector3 mPlayer = new Vector3(player.transform.position.x, this.transform.position.y, player.transform.position.z);
-        Vector3 mScanner = new Vector3(scanner.transform.position.x, this.transform.position.y, scanner.transform.position.z);
+        mPlayer = new Vector3(player.transform.position.x, this.transform.position.y, player.transform.position.z);
+        mScanner = new Vector3(scanner.transform.position.x, this.transform.position.y, scanner.transform.position.z);
         
-        // if player is ontop of this square, it is active
-        if(Vector3.Distance(this.transform.position, mPlayer) <= 0.15f)
-        {
-            squareActive = true;
-            available = false;
-        }
 
-        // if scanner is currently ontop of this, not available
-        else if(Vector3.Distance(this.transform.position, mScanner )<= 1f)
-        {
-            available = false;
-        }
-        // if the scanner is not ontop but still close enough, is available
-        else if(Mathf.Abs(this.transform.position.x - mScanner.x) <= 2 && Vector3.Distance(transform.position, mScanner) <= 5)
-            available = true;
-        else if(Mathf.Abs(this.transform.position.z - mScanner.z) <= 2 && Vector3.Distance(transform.position, mScanner) <= 5)
-            available = true;
-        else
-            available = false;
+        TrackPosition();
+        
 
-        // if player is far away, make square available again        
-        if(Vector3.Distance(this.transform.position, mPlayer) > 5f)
-        {
-            squareActive = false;
-        }
 
         if(available)
         {
             lr.enabled = true;
+            lr.startColor = Color.green;
+            lr.endColor = Color.cyan;
+            lr.SetPosition(1, mScanner);
+        }
+        else if(nearby)
+        {
+            lr.enabled = true;
+            lr.startColor = Color.red;
+            lr.endColor = Color.red;
             lr.SetPosition(1, mScanner);
         }
         else
@@ -74,20 +70,66 @@ public class Square : MonoBehaviour
             UpdateLists();
     }
 
+    void TrackPosition()
+    {
+
+            // if player is ontop of this square, it is active
+            if(Vector3.Distance(this.transform.position, mPlayer) <= 0.15f)
+            {
+                squareActive = true;
+                available = false;
+                nearby = false;
+            }
+
+            // if scanner is currently ontop of this, not available
+            // also turn it active
+            else if(Vector3.Distance(this.transform.position, mScanner )<= 1f)
+            {
+                squareActive = true;
+                available = false;
+                nearby = false;
+            }
+            // if the scanner is not ontop but still close enough, is available
+            else if(Mathf.Abs(this.transform.position.x - mScanner.x) <= 2 && Vector3.Distance(transform.position, mScanner) <= 5)
+            {
+                nearby = true;
+                if(!squareActive)
+                    available = true;
+            }
+                
+            else if(Mathf.Abs(this.transform.position.z - mScanner.z) <= 2 && Vector3.Distance(transform.position, mScanner) <= 5)
+            {
+                nearby = true;
+                if(!squareActive)
+                    available = true;
+            }
+            else
+            {
+                nearby = false;
+                available = false;
+            }
+        
+    }
+
+
+    //add square to gamemanager list according to its position from scanner
     void UpdateLists()
     {
+        //if square hasnt been used yet, use it
         if(!squareActive)
-        {
             if(available && !gm.nextSquares.Contains(this.gameObject))
                 gm.nextSquares.Add(this.gameObject);
-
-            else if(!available && gm.nextSquares.Contains(this.gameObject))
+        
+        //remove from valid listing if too far or already active
+        if(!available || squareActive)
+            if(gm.nextSquares.Contains(this.gameObject))
                 gm.nextSquares.Remove(this.gameObject);
-        }
-        if(available && !gm.nearbySquares.Contains(this.gameObject))
+        
+        //keep track of used squares aswell
+        if(nearby && !gm.nearbySquares.Contains(this.gameObject))
             gm.nearbySquares.Add(this.gameObject);
 
-        else if(!available && gm.nearbySquares.Contains(this.gameObject))
+        if(!nearby && gm.nearbySquares.Contains(this.gameObject))
             gm.nearbySquares.Remove(this.gameObject);
     }
 

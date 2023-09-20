@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SpawnTarget()
     {
+        yield return new WaitForSeconds(1);
         for (int i = 0; i < difficulty; i++)
         {
             //call for the next available square
