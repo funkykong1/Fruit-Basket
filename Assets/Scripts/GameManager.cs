@@ -18,19 +18,19 @@ public class GameManager : MonoBehaviour
     public int score, difficulty;
     public float spawnRate;
     public bool gameActive;
-    private GameObject scanner;
+    private GameObject scanner, player;
     
     public TextMeshProUGUI scoreText;
 
     void Awake()
     {
         scanner = GameObject.Find("Scanner");
+        player = GameObject.Find("Player");
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        scanner.transform.position = GameObject.Find("Player").transform.position;
         score = 0;
         UpdateScore(0);
         //catalog all squares
@@ -42,13 +42,18 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        scanner.transform.position = GameObject.Find("Player").transform.position;
+        //get pos of random square, place plr and scanner there
+        GameObject rnd = allSquares[Random.Range(0, allSquares.Count)];
+        player.transform.position = new Vector3(rnd.transform.position.x, player.transform.position.y, rnd.transform.position.z);
+        scanner.transform.position = player.transform.position;
+
+
         StartCoroutine(SpawnTarget());
     }
 
     IEnumerator SpawnTarget()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         for (int i = 0; i < difficulty; i++)
         {
             //call for the next available square

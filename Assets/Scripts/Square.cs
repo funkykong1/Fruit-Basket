@@ -31,7 +31,7 @@ public class Square : MonoBehaviour
     }
     void Start()
     {
-        lr.SetPosition(0, transform.position);
+        lr.SetPosition(0, transform.position + Vector3.up);
         squareActive = false;
         available = false;
         nearby = false;
@@ -47,27 +47,9 @@ public class Square : MonoBehaviour
 
         TrackPosition();
         
+        UpdateLines();
 
-
-        if(available)
-        {
-            lr.enabled = true;
-            lr.startColor = Color.green;
-            lr.endColor = Color.cyan;
-            lr.SetPosition(1, mScanner);
-        }
-        else if(nearby)
-        {
-            lr.enabled = true;
-            lr.startColor = Color.red;
-            lr.endColor = Color.red;
-            lr.SetPosition(1, mScanner);
-        }
-        else
-        {
-            lr.enabled = false;
-        }
-            UpdateLists();
+        UpdateLists();
     }
 
     void TrackPosition()
@@ -131,6 +113,28 @@ public class Square : MonoBehaviour
 
         if(!nearby && gm.nearbySquares.Contains(this.gameObject))
             gm.nearbySquares.Remove(this.gameObject);
+    }
+
+    void UpdateLines()
+    {
+        if(available)
+        {
+            lr.enabled = true;
+            lr.startColor = Color.green;
+            lr.endColor = Color.cyan;
+            lr.SetPosition(1, mScanner + Vector3.up);
+        }
+        else if(nearby)
+        {
+            lr.enabled = true;
+            lr.startColor = Color.red;
+            lr.endColor = Color.red;
+            lr.SetPosition(1, mScanner + Vector3.up);
+        }
+        else
+        {
+            lr.enabled = false;
+        }
     }
 
 
