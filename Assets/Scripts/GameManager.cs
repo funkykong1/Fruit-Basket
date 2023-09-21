@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
         UpdateScore(0);
         gameActive = false;
         lamp.color = bright;
+        difficulty = 2;
         //catalog all squares
         foreach (GameObject square in GameObject.FindGameObjectsWithTag("Square"))
         {
@@ -147,11 +148,22 @@ public class GameManager : MonoBehaviour
 
     public void UpdateScore(int scoreToAdd)
     {
+        StartCoroutine(ScoreAdder(1));
+    }
+
+    private IEnumerator ScoreAdder(int scoreToAdd)
+    {
+        yield return new WaitForSeconds(0.2f);
         score += scoreToAdd;
         scoreText.text = "Score: " + score;
+        int itemsLeft = 0;
 
-        if(goodActiveItems.Count == 0)
-            StartCoroutine(LightsOn());
+        for (int i = 0; i < goodActiveItems.Count; i++)
+        {
+            if(goodActiveItems[i] != null)
+                itemsLeft++;
+        }
+        StartCoroutine(LightsOn());
     }
 
 
@@ -184,7 +196,7 @@ public class GameManager : MonoBehaviour
                     yield return new WaitForFixedUpdate();
                     yield return new WaitForFixedUpdate();
             }
-        StartGame();
+        NextStage();
         yield return gameActive = false;
     }
     public void EndGame()

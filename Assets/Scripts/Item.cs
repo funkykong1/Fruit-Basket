@@ -56,13 +56,12 @@ public class Item : MonoBehaviour
             if(this.tag == "Good Item")
             {
                 gm.UpdateScore(1);
-                gm.goodActiveItems.Remove(gameObject);
             }
             else
             {
                 //todo bad items?
-                gm.UpdateScore(-1);
                 gm.badActiveItems.Remove(gameObject);
+                gm.UpdateScore(-1);
             }
             Destroy(gameObject);
         }
