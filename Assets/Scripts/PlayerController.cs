@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour
     //how smoothly player should go to the next square
     [Range(0.1f, 0.6f)] [SerializeField] private float movementSmoothing = .05f;
 
-    //scheduled moving 
-    public bool moving;
+    //scheduled moving //is the next fruit falling?
+    public bool moving, fruitFalling;
 
     //how fast is rotation
     public float rotationSpeed = 150f, moveSpeed = 5f;
@@ -25,11 +25,16 @@ public class PlayerController : MonoBehaviour
     //dir used by LookRotation //velocity used by SmoothDamp
     Vector3 dir, velocity;
 
+    private GameManager gm;
+
+    public int currentFruit;
+
 
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     // Start is called before the first frame update
@@ -42,9 +47,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        //handles rotation
-        Rotation();
-        
+        if(gm.gameActive)
+            //handles rotation
+            Rotation();
+
     }
 
     void LateUpdate()
@@ -115,6 +121,8 @@ public class PlayerController : MonoBehaviour
         //Only account for x and z axis for distance calculation
         Vector3 mPlayer = new Vector3(transform.position.x, targetSquare.transform.position.y, transform.position.z);
 
+        if(!fruitFalling)
+            StartCoroutine(DropFruit());
 
         //if remaining distance sufficiently small, stop
         var distance = Vector3.Distance(transform.position, mSquare);
@@ -129,6 +137,17 @@ public class PlayerController : MonoBehaviour
             this.GetComponent<BoxCollider>().enabled = true;
         }
                
+    }
+
+    private IEnumerator DropFruit()
+    {
+        fruitFalling = true;
+
+        yield return new WaitUntil(() => !moving);
+        gm.goodActiveItems[currentFruit].GetComponent<Rigidbody>().useGravity = true;
+        currentFruit++;
+        
+        fruitFalling = false;
     }
 
 
