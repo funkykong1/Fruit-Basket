@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     private GameObject scanner, player;
     public TextMeshProUGUI scoreText;
     private Light lamp;
+    private GameObject nextButton;
 
     //rgb colors
     private Color bright = new Color32(245,225,200,255);
@@ -45,26 +46,14 @@ public class GameManager : MonoBehaviour
         lamp = GameObject.Find("Directional Light").GetComponent<Light>();
         scanner = GameObject.Find("Scanner");
         player = GameObject.Find("Player");
+        nextButton = GameObject.Find("Next Button");
+        nextButton.SetActive(false);
 
         //HSV light colors
         hue = 45;
         sat = 15;
         brt = 100;
 
-    }
-
-    void Update()
-    {
-        bright = Color.HSVToRGB(hue/360,sat/100,brt/100, false);
-        lamp.color = bright;
-
-        //shadows fade away with saturation
-        if(sat > 0)
-            sdw = sat/18;
-        else
-            sdw = 0;
-
-        lamp.shadowStrength = sdw;
 
     }
 
@@ -80,6 +69,21 @@ public class GameManager : MonoBehaviour
         {
             allSquares.Add(square);
         }
+    }
+
+    void Update()
+    {
+        bright = Color.HSVToRGB(hue/360,sat/100,brt/100, false);
+        lamp.color = bright;
+
+        //shadows fade away with saturation
+        if(sat > 0)
+            sdw = sat/18;
+        else
+            sdw = 0;
+
+        lamp.shadowStrength = sdw;
+
     }
 
     public void StartGame()
@@ -100,7 +104,7 @@ public class GameManager : MonoBehaviour
         //add bad items to pool?
         if(difficulty >= 5)
         {
-            
+
         }
     }
 
@@ -113,12 +117,24 @@ public class GameManager : MonoBehaviour
         {
             //call for the next available square
             GameObject square = NextSquare();
-            //yield return new WaitUntil(() => NextSquare());
-
-            //spawn a random thing on it
-            int index = Random.Range(0, goodItems.Length);
-            GameObject fruit = Instantiate(goodItems[index], square.transform.position, Quaternion.identity);
-            goodActiveItems.Add(fruit);
+            GameObject fruit;
+            int index;
+            //20% of items are bad if difficulty high enough
+            if(difficulty > 4 && Random.Range(1,5) == 1)
+            {
+                //spawn a random BAD thing on a square
+                index = Random.Range(0, badItems.Length);
+                fruit = Instantiate(badItems[index], square.transform.position, Quaternion.identity);
+                badActiveItems.Add(fruit);
+            }
+            else
+            {
+                //spawn a random good thing on a square
+                index = Random.Range(0, goodItems.Length);
+                fruit = Instantiate(goodItems[index], square.transform.position, Quaternion.identity);
+                goodActiveItems.Add(fruit);
+            }
+                
 
             //move scanner there and wait a bit
             scanner.transform.position = square.transform.position;
@@ -128,6 +144,16 @@ public class GameManager : MonoBehaviour
         StartCoroutine(LightsOut());
     
     }
+
+    public void UpdateScore(int scoreToAdd)
+    {
+        score += scoreToAdd;
+        scoreText.text = "Score: " + score;
+
+        if(goodActiveItems.Count == 0)
+            StartCoroutine(LightsOn());
+    }
+
 
     IEnumerator LightsOut()
     {
@@ -161,16 +187,6 @@ public class GameManager : MonoBehaviour
         StartGame();
         yield return gameActive = false;
     }
-
-    public void UpdateScore(int scoreToAdd)
-    {
-        score += scoreToAdd;
-        scoreText.text = "Score: " + score;
-
-        if(goodActiveItems.Count == 0)
-            StartCoroutine(LightsOn());
-    }
-
     public void EndGame()
     {
         //TODO: make all remaining items fall

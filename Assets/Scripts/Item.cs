@@ -72,7 +72,10 @@ public class Item : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Ground"))
         {
-            gm.EndGame();
+            if(gameObject.CompareTag("Good Item"))
+                gm.EndGame();
+            gm.badActiveItems?.Remove(gameObject);
+            Destroy(gameObject,1.5f);
         }
             
     }

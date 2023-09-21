@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 69f0af3a0a6c73b4ab4b89eb82cdc488
 ModelImporter:
-  serializedVersion: 20200
+  serializedVersion: 20300
   internalIDToNameTable:
   - first:
       1: 100000
@@ -49,7 +49,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages:
     - 0.25
@@ -116,6 +116,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
