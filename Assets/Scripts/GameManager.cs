@@ -92,6 +92,18 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SpawnTarget());
     }
 
+    public void NextStage()
+    {
+        difficulty++;
+        StartGame();
+        //if difficulty such and so, change to a bigger map?
+        //add bad items to pool?
+        if(difficulty >= 5)
+        {
+            
+        }
+    }
+
     IEnumerator SpawnTarget()
     {
         yield return new WaitForSeconds(2);
@@ -120,7 +132,7 @@ public class GameManager : MonoBehaviour
     IEnumerator LightsOut()
     {
         //adjust brightness here
-        while(brt > 75)
+        while(brt > 50)
             {
                 brt--;
                 if(sat > 0)

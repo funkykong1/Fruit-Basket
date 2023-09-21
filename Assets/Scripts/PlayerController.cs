@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitUntil(() => !moving);
         gm.goodActiveItems[currentFruit].GetComponent<Rigidbody>().useGravity = true;
         currentFruit++;
-        
+
         fruitFalling = false;
     }
 
@@ -158,10 +158,7 @@ public class PlayerController : MonoBehaviour
         if(!other.CompareTag("Square"))
             return;
 
-
         targetSquare = other.gameObject;
-        Debug.Log(targetSquare.name+ " found");
-        
     }
 
     //targetSquare nulled if rotating away from one
