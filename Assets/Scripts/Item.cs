@@ -59,9 +59,7 @@ public class Item : MonoBehaviour
             }
             else
             {
-                //todo bad items?
-                gm.badActiveItems.Remove(gameObject);
-                gm.UpdateScore(-1);
+                gm.EndGame("stood under a dangerous item!");
             }
             Destroy(gameObject);
         }
@@ -72,8 +70,10 @@ public class Item : MonoBehaviour
         if(other.gameObject.CompareTag("Ground"))
         {
             if(gameObject.CompareTag("Good Item"))
-                gm.EndGame();
-            gm.badActiveItems?.Remove(gameObject);
+                gm.EndGame("let food go to waste!");
+            else
+                gm.UpdateScore(1);
+
             Destroy(gameObject,1.5f);
         }
             

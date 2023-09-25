@@ -51,6 +51,11 @@ public class PlayerController : MonoBehaviour
             //handles rotation
             Rotation();
 
+        //dont let player catch bad items
+        if(moving)
+            GetComponent<SphereCollider>().enabled = false;
+        else
+            GetComponent<SphereCollider>().enabled = true;
     }
 
     void LateUpdate()
@@ -143,13 +148,46 @@ public class PlayerController : MonoBehaviour
     {
         fruitFalling = true;
 
-        yield return new WaitUntil(() => !moving);
-        gm.goodActiveItems[currentFruit].GetComponent<Rigidbody>().useGravity = true;
-        currentFruit++;
+        // fetch next fruit
+        GameObject fruit = null;
+        if(gm.activeItems[currentFruit] != null)
+        {
+            fruit = gm.activeItems[currentFruit];
+            // tick up fruit counter
+            if(gm.activeItems[currentFruit+1] != null)
+                currentFruit++;
 
-        fruitFalling = false;
+            //wait until player is comfortably in the square
+            yield return new WaitUntil(() => !moving);
+            if(fruit.CompareTag("Bad Item"))
+            {
+                StartCoroutine(AdjustSpeed());
+            }
+            fruit.GetComponent<Rigidbody>().useGravity = true;
+            fruitFalling = false;
+            
+        }
+        else
+            yield return fruitFalling = false;
     }
 
+    //makes player faster for a bit
+    private IEnumerator AdjustSpeed()
+    {
+        //adjust speed of player when dodging a dangerous thing
+        rotationSpeed = 250;
+        moveSpeed = 14;
+        //if player is still in the dangerous square, wait until they move
+        if(!moving)
+            yield return new WaitUntil(() => moving);
+
+        //if player is moving, wait until they stop in the next square
+        yield return new WaitUntil(() => !moving);
+
+        //restore previous values
+        moveSpeed = 8;
+        rotationSpeed = 190;
+    }
 
     //detect square infront to move to
     void OnTriggerEnter(Collider other)

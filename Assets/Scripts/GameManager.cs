@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] badItems;
 
 
-    public List<GameObject> goodActiveItems, badActiveItems;
+    public List<GameObject> activeItems;
     public List<GameObject> allSquares;
 
     [Header("List of valid nearby squares")]
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     private GameObject nextButton;
 
     //rgb colors
-    private Color bright = new Color32(245,225,200,255);
+    private Color bright = new Color32(255,237,197,255);
     public float hue,sat,brt, sdw;
 
     void Awake()
@@ -50,8 +50,8 @@ public class GameManager : MonoBehaviour
         nextButton.SetActive(false);
 
         //HSV light colors
-        hue = 45;
-        sat = 15;
+        hue = 41;
+        sat = 23;
         brt = 100;
 
 
@@ -64,7 +64,6 @@ public class GameManager : MonoBehaviour
         UpdateScore(0);
         gameActive = false;
         lamp.color = bright;
-        difficulty = 2;
         //catalog all squares
         foreach (GameObject square in GameObject.FindGameObjectsWithTag("Square"))
         {
@@ -79,7 +78,7 @@ public class GameManager : MonoBehaviour
 
         //shadows fade away with saturation
         if(sat > 0)
-            sdw = sat/18;
+            sdw = sat/23;
         else
             sdw = 0;
 
@@ -126,16 +125,14 @@ public class GameManager : MonoBehaviour
                 //spawn a random BAD thing on a square
                 index = Random.Range(0, badItems.Length);
                 fruit = Instantiate(badItems[index], square.transform.position, Quaternion.identity);
-                badActiveItems.Add(fruit);
             }
             else
             {
                 //spawn a random good thing on a square
                 index = Random.Range(0, goodItems.Length);
                 fruit = Instantiate(goodItems[index], square.transform.position, Quaternion.identity);
-                goodActiveItems.Add(fruit);
             }
-                
+            activeItems.Add(fruit);
 
             //move scanner there and wait a bit
             scanner.transform.position = square.transform.position;
@@ -146,11 +143,13 @@ public class GameManager : MonoBehaviour
     
     }
 
+    //Call update score coroutine from elsewhere
     public void UpdateScore(int scoreToAdd)
     {
-        StartCoroutine(ScoreAdder(1));
+        StartCoroutine(ScoreAdder(scoreToAdd));
     }
 
+    //use coroutine for wait function, smoother gameplay
     private IEnumerator ScoreAdder(int scoreToAdd)
     {
         yield return new WaitForSeconds(0.2f);
@@ -158,12 +157,13 @@ public class GameManager : MonoBehaviour
         scoreText.text = "Score: " + score;
         int itemsLeft = 0;
 
-        for (int i = 0; i < goodActiveItems.Count; i++)
+        for (int i = 0; i < activeItems.Count; i++)
         {
-            if(goodActiveItems[i] != null)
+            if(activeItems[i] != null)
                 itemsLeft++;
         }
-        StartCoroutine(LightsOn());
+        if(itemsLeft == 0 && gameActive)
+            StartCoroutine(LightsOn());
     }
 
 
@@ -186,20 +186,20 @@ public class GameManager : MonoBehaviour
 
     IEnumerator LightsOn()
     {
-        while(brt < 96)
+        while(brt < 100)
             {
                 brt++;
-                    if(sat < 18)
+                    if(sat < 23)
                     {
                         sat++;
                     }
                     yield return new WaitForFixedUpdate();
                     yield return new WaitForFixedUpdate();
             }
-        NextStage();
+        nextButton.SetActive(true);
         yield return gameActive = false;
     }
-    public void EndGame()
+    public void EndGame(string reason)
     {
         //TODO: make all remaining items fall
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
