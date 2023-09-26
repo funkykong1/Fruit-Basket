@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2195873594243898111}
   - component: {fileID: 4988797516977164215}
   - component: {fileID: -188310996968259589}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Pepper
   m_TagString: Good Item
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2068171520692640919}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 6a4b0155d3e4d2f49b9404b5e75cc67d, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -126,3 +126,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ySpawnPos: 25
+  dist: 0

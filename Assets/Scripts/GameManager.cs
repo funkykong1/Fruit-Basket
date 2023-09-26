@@ -42,19 +42,27 @@ public class GameManager : MonoBehaviour
     //hsv values, shadow float, scale shadow with sat
     public float hue,sat,brt, sdw;
 
+    private Canvas start, loser;
+
     void Awake()
     {
+        start = GameObject.Find("Menu Canvas").GetComponent<Canvas>();
+        loser = GameObject.Find("Loser Canvas").GetComponent<Canvas>();
+
         lamp = GameObject.Find("Directional Light").GetComponent<Light>();
+
         scanner = GameObject.Find("Scanner");
         player = GameObject.Find("Player");
         nextButton = GameObject.Find("Next Button");
+
         nextButton.SetActive(false);
+
+        loser.enabled = false;
 
         //HSV light colors
         hue = 41;
         sat = 23;
         brt = 100;
-
 
     }
 
@@ -93,31 +101,32 @@ public class GameManager : MonoBehaviour
         GameObject rnd = allSquares[Random.Range(0, allSquares.Count)];
         player.transform.position = new Vector3(rnd.transform.position.x, player.transform.position.y, rnd.transform.position.z);
         scanner.transform.position = player.transform.position;
+        start.enabled = false;
 
         StartCoroutine(SpawnTarget());
     }
 
     public void NextStage()
     {
+        //clear all lists and increase difficulty
+        player.GetComponent<PlayerController>().currentFruit = 0;
+        activeItems.Clear();
         difficulty++;
-        StartCoroutine(SpawnTarget());
-        //if difficulty such and so, change to a bigger map?
-        //add bad items to pool?
-        if(difficulty >= 5)
-        {
 
-        }
+        StartCoroutine(SpawnTarget());
     }
+
 
     IEnumerator SpawnTarget()
     {
+        //doesnt work without this
+        yield return new WaitForSeconds(0.1f);
+        
         //reset square active status
         foreach (GameObject square in allSquares)
         {
             square.GetComponent<Square>().squareActive = false;
         }
-
-        yield return new WaitForSeconds(0.5f);
 
         //drop 'difficulty' amount of fruits
         for (int i = 0; i < difficulty; i++)
@@ -126,8 +135,15 @@ public class GameManager : MonoBehaviour
             GameObject square = NextSquare();
             GameObject fruit;
             int index;
-            //20% of items are bad if difficulty high enough
-            if(difficulty > 4 && Random.Range(1,5) == 1)
+
+            int randomizer = 5;
+
+            //25% of items bad if difficulty really high
+            if(difficulty > 8)
+                randomizer = 4;
+
+            //20% of items are bad if difficulty high
+            if(difficulty > 5 && Random.Range(1,randomizer) == 1)
             {
                 //spawn a random BAD thing on a square
                 index = Random.Range(0, badItems.Length);
@@ -145,7 +161,7 @@ public class GameManager : MonoBehaviour
             scanner.transform.position = square.transform.position;
             yield return new WaitForSeconds(spawnRate);
         }
-        yield return new WaitForSeconds(3+difficulty/2);
+        yield return new WaitForSeconds(3+difficulty/3);
         StartCoroutine(LightsOut());
     
     }
@@ -193,6 +209,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator LightsOn()
     {
+        gameActive = false;
         while(brt < 100)
             {
                 brt++;
@@ -204,12 +221,39 @@ public class GameManager : MonoBehaviour
                     yield return new WaitForFixedUpdate();
             }
         nextButton.SetActive(true);
-        yield return gameActive = false;
     }
+
     public void EndGame(string reason)
     {
-        //TODO: make all remaining items fall
+        if(!gameActive)
+            return;
+        gameActive = false;
+
+        loser.enabled = true;
+        
+        StartCoroutine(DropAll());
+
+        TextMeshProUGUI text = GameObject.Find("Reason Text").GetComponent<TextMeshProUGUI>();
+        text.text = "you " + reason;
+
+
+    }
+
+    public void Restart()
+    {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    IEnumerator DropAll()
+    {
+        for (int i = 0; i < activeItems.Count; i++)
+        {
+            if(activeItems[i] != null)
+            {
+                activeItems[i].GetComponent<Rigidbody>().useGravity = true;
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
     }
 
     //returns a valid square for the next fruit to fall on

@@ -11,10 +11,7 @@ GameObject:
   - component: {fileID: 6929075920826316649}
   - component: {fileID: 6306972711090370764}
   - component: {fileID: 8098080203941563398}
-  - component: {fileID: 7078826841678190353}
-  - component: {fileID: 7041043120758092208}
-  - component: {fileID: 3534856419813906748}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Prefab
   m_TagString: Bad Item
   m_Icon: {fileID: 0}
@@ -84,49 +81,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7078826841678190353
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7737981829875035603}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.08316372, y: 0.01147024, z: 0.5179838}
-  m_Center: {x: -0.008382309, y: -0.0000776893, z: -0.17160901}
---- !u!54 &7041043120758092208
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7737981829875035603}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 2
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 2
-  m_Constraints: 10
-  m_CollisionDetection: 1
---- !u!114 &3534856419813906748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7737981829875035603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a4f6711fd0bcf9439d95ac4cabd22f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ySpawnPos: 25
-  dist: 0
 --- !u!1 &8038011433062456024
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,9 +90,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2323304911548531167}
-  m_Layer: 0
+  - component: {fileID: 5882465903227153251}
+  - component: {fileID: 8031601979605475892}
+  - component: {fileID: 2862680730558229804}
+  - component: {fileID: 4054187559965585907}
+  m_Layer: 7
   m_Name: Knife
-  m_TagString: Untagged
+  m_TagString: Bad Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -158,3 +116,54 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5882465903227153251
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8038011433062456024}
+  m_Material: {fileID: 13400000, guid: 6a4b0155d3e4d2f49b9404b5e75cc67d, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.24060719, y: 0.27954242, z: 1.6204922}
+  m_Center: {x: 0.047661282, y: -0.04746965, z: -0.09434688}
+--- !u!54 &8031601979605475892
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8038011433062456024}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 1
+--- !u!114 &2862680730558229804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8038011433062456024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a4f6711fd0bcf9439d95ac4cabd22f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ySpawnPos: 0
+  dist: 0
+--- !u!33 &4054187559965585907
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8038011433062456024}
+  m_Mesh: {fileID: 4898376589914736847, guid: fd60263792e82964bac79b765f4eba88, type: 3}

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3994473740914125031}
   - component: {fileID: 2692552605904297773}
   - component: {fileID: 3279752640602719556}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Axe_01
   m_TagString: Bad Item
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2775610347764630504}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 6a4b0155d3e4d2f49b9404b5e75cc67d, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2

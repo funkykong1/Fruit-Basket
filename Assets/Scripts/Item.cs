@@ -20,22 +20,28 @@ public class Item : MonoBehaviour
     Color32 black;
     [Header("Current Distance")]
     [SerializeField]private float dist;
-
+    private MeshRenderer rend;
+    bool running = false;
 
     //init
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        mesh = GetComponent<MeshFilter>().mesh;
+
+        //either get mesh components from this or a child object
+        mesh = (GetComponent<MeshFilter>().mesh) ? GetComponent<MeshFilter>().mesh: GetComponentInChildren<MeshFilter>().mesh;
+        rend = (GetComponent<MeshRenderer>()) ? GetComponent<MeshRenderer>(): GetComponentInChildren<MeshRenderer>();
+
         gm = GameObject.Find("Game Manager").GetComponent<GameManager>();   
         sphere = GameObject.Find("Player").GetComponent<SphereCollider>();
+        Physics.IgnoreLayerCollision(7,7, true);
     }
 
     void Start()
     {
 
         //Change y spawn position for each prefab
-        ySpawnPos = 35;
+        ySpawnPos = 26;
 
         //get colors and vertices of mesh
         Vector3[] vertices = mesh.vertices;
@@ -46,24 +52,30 @@ public class Item : MonoBehaviour
         //add rotation to object, remove gravity and move it high, add mass too
         rb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
         rb.angularDrag = 0.001f;
+        rb.drag = 0.001f;
+        rb.mass = 15;
         rb.useGravity = false;
         transform.position = new Vector3(transform.position.x, ySpawnPos, transform.position.z);
     }
 
     void FixedUpdate()
     {
-        //Use distance to adjust mass, item falls slower when higher up
-        dist = Vector3.Distance(GameObject.Find("Player").transform.position, this.transform.position);
-        if(dist < 20)
+        dist = Vector3.Distance(transform.position, GameObject.Find("Player").transform.position);
+        if(dist < 11 && !running)
         {
-            rb.mass = 4;
+            StartCoroutine(AdjustSpeed());
+            running = true;
         }
-        else
-        {
-            rb.mass = 13;
-        }
-        //add some drag too for more smoothness
-        rb.drag = dist/100;
+    }
+
+    //slightly adjust falling drag to give player more time to dodge
+    private IEnumerator AdjustSpeed()
+    {
+        rb.drag = 0.4f;
+        rb.mass = 12;
+        yield return new WaitForSeconds(0.2f);
+        rb.mass = 15;
+        rb.drag = 0.01f;
     }
 
     //If hits player
@@ -83,6 +95,7 @@ public class Item : MonoBehaviour
         }
     }
 
+    //ground collision
     void OnCollisionEnter(Collision other)
     {
         if(other.gameObject.CompareTag("Ground"))
@@ -92,6 +105,7 @@ public class Item : MonoBehaviour
             else
                 gm.UpdateScore(1);
 
+            rb.mass = 3;
             Destroy(gameObject,1.5f);
         }
             

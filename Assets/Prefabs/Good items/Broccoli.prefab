@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1634737791343031696}
   - component: {fileID: 2368881532708906018}
   - component: {fileID: 5628072449877803791}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Broccoli
   m_TagString: Good Item
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 529447677182583428}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 6a4b0155d3e4d2f49b9404b5e75cc67d, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -126,3 +126,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ySpawnPos: 25
+  dist: 0

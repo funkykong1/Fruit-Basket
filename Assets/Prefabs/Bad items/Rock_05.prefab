@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4968173156611827654}
   - component: {fileID: 3503609977052132665}
   - component: {fileID: 3503609977052132664}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Rock_05
   m_TagString: Bad Item
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3503609977052132671}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 6a4b0155d3e4d2f49b9404b5e75cc67d, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
@@ -127,3 +127,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ySpawnPos: 25
+  dist: 0

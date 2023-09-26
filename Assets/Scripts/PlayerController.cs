@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     public float rotationSpeed = 150f, moveSpeed = 5f;
 
     //which square should player go to
-    public GameObject targetSquare, currentSquare;
+    public GameObject targetSquare;
 
     //where player should be rotating to
     public Quaternion targetRotation;
@@ -50,12 +50,6 @@ public class PlayerController : MonoBehaviour
         if(gm.gameActive)
             //handles rotation
             Rotation();
-
-        //dont let player catch bad items
-        if(moving)
-            GetComponent<SphereCollider>().enabled = false;
-        else
-            GetComponent<SphereCollider>().enabled = true;
     }
 
     void LateUpdate()
@@ -126,6 +120,7 @@ public class PlayerController : MonoBehaviour
         //Only account for x and z axis for distance calculation
         Vector3 mPlayer = new Vector3(transform.position.x, targetSquare.transform.position.y, transform.position.z);
 
+        //drop fruits via player movement
         if(!fruitFalling)
             StartCoroutine(DropFruit());
 
@@ -147,15 +142,13 @@ public class PlayerController : MonoBehaviour
     private IEnumerator DropFruit()
     {
         fruitFalling = true;
-
         // fetch next fruit
         GameObject fruit = null;
         if(gm.activeItems[currentFruit] != null)
         {
             fruit = gm.activeItems[currentFruit];
             // tick up fruit counter
-            if(gm.activeItems[currentFruit] != null)
-                currentFruit++;
+            currentFruit++;
 
             //wait until player is comfortably in the square
             yield return new WaitUntil(() => !moving);
@@ -168,15 +161,18 @@ public class PlayerController : MonoBehaviour
             
         }
         else
-            yield return fruitFalling = false;
+            yield return gm.gameActive = false;
     }
 
     //makes player faster for a bit
     private IEnumerator AdjustSpeed()
     {
+        //smaller sphere collider
+        GetComponent<SphereCollider>().radius = 0.3f;
+
         //adjust speed of player when dodging a dangerous thing
-        rotationSpeed = 300;
-        moveSpeed = 18;
+        rotationSpeed = 400;
+        moveSpeed = 30;
         //if player is still in the dangerous square, wait until they move
         if(!moving)
             yield return new WaitUntil(() => moving);
@@ -185,8 +181,9 @@ public class PlayerController : MonoBehaviour
         yield return new WaitUntil(() => !moving);
 
         //restore previous values
-        moveSpeed = 8;
-        rotationSpeed = 190;
+        moveSpeed = 10;
+        rotationSpeed = 210;
+        GetComponent<SphereCollider>().radius = 0.5f;
     }
 
     //detect square infront to move to

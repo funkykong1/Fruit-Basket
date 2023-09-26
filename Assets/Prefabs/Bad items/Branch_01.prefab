@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2789029989707071510}
   - component: {fileID: 7854022227169979044}
   - component: {fileID: 7854022227169979047}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Branch_01
   m_TagString: Bad Item
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7854022227169979046}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 6a4b0155d3e4d2f49b9404b5e75cc67d, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4

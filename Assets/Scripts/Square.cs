@@ -35,6 +35,7 @@ public class Square : MonoBehaviour
         squareActive = false;
         available = false;
         nearby = false;
+
     }
 
 
@@ -47,7 +48,9 @@ public class Square : MonoBehaviour
 
         TrackPosition();
         
-        UpdateLines();
+        //DEBUG
+        //UpdateLines();
+        lr.enabled = false;
 
         UpdateLists();
     }

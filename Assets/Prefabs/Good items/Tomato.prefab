@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2008764757078268500}
   - component: {fileID: 2170922486575406993}
   - component: {fileID: 1300507608619354369}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tomato
   m_TagString: Good Item
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730337461780652462}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 6a4b0155d3e4d2f49b9404b5e75cc67d, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -126,3 +126,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ySpawnPos: 25
+  dist: 0
