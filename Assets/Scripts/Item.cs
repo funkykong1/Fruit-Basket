@@ -35,7 +35,7 @@ public class Item : MonoBehaviour
     {
 
         //Change y spawn position for each prefab
-        ySpawnPos = 30;
+        ySpawnPos = 35;
 
         //get colors and vertices of mesh
         Vector3[] vertices = mesh.vertices;
@@ -53,14 +53,14 @@ public class Item : MonoBehaviour
     void FixedUpdate()
     {
         //Use distance to adjust mass, item falls slower when higher up
-        dist = Vector3.Distance(GameObject.Find("Player").transform.position, transform.position);
+        dist = Vector3.Distance(GameObject.Find("Player").transform.position, this.transform.position);
         if(dist < 20)
         {
-            rb.mass = 5;
+            rb.mass = 4;
         }
         else
         {
-            rb.mass = 15;
+            rb.mass = 13;
         }
         //add some drag too for more smoothness
         rb.drag = dist/100;
