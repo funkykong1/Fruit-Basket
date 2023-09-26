@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
 
     //rgb colors
     private Color bright = new Color32(255,237,197,255);
+    //hsv values, shadow float, scale shadow with sat
     public float hue,sat,brt, sdw;
 
     void Awake()
@@ -115,7 +116,7 @@ public class GameManager : MonoBehaviour
         {
             square.GetComponent<Square>().squareActive = false;
         }
-        
+
         yield return new WaitForSeconds(0.5f);
 
         //drop 'difficulty' amount of fruits
@@ -176,7 +177,7 @@ public class GameManager : MonoBehaviour
     IEnumerator LightsOut()
     {
         //adjust brightness here
-        while(brt > 50)
+        while(brt > 75)
             {
                 brt--;
                 if(sat > 0)
