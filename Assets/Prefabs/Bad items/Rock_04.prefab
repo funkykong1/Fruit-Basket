@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1189489906751283921}
   - component: {fileID: 1189489906750316561}
   - component: {fileID: 8122573742317767832}
-  - component: {fileID: 4749940127604193608}
   - component: {fileID: 4749940127604193607}
+  - component: {fileID: -6595437798687837683}
   m_Layer: 0
   m_Name: Rock_04
   m_TagString: Bad Item
@@ -97,19 +97,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ySpawnPos: 25
---- !u!65 &4749940127604193608
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1189489906752257745}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.4286633, y: 1.065031, z: 1.3924813}
-  m_Center: {x: 0.016092807, y: 0.029276997, z: -0.015049368}
 --- !u!54 &4749940127604193607
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -126,3 +113,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 10
   m_CollisionDetection: 0
+--- !u!64 &-6595437798687837683
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189489906752257745}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 682bef71ca092ef49bfed7f1cef5b893, type: 3}

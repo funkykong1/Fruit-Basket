@@ -55,41 +55,41 @@ public class Square : MonoBehaviour
     void TrackPosition()
     {
 
-            // if player is ontop of this square, it is active
-            if(Vector3.Distance(this.transform.position, mPlayer) <= 0.15f)
-            {
-                squareActive = true;
-                available = false;
-                nearby = false;
-            }
+        // if player is ontop of this square, it is active
+        if(Vector3.Distance(this.transform.position, mPlayer) <= 0.15f)
+        {
+            squareActive = true;
+            available = false;
+            nearby = false;
+        }
 
-            // if scanner is currently ontop of this, not available
-            // also turn it active
-            else if(Vector3.Distance(this.transform.position, mScanner )<= 1f)
-            {
-                squareActive = true;
-                available = false;
-                nearby = false;
-            }
-            // if the scanner is not ontop but still close enough, is available
-            else if(Mathf.Abs(this.transform.position.x - mScanner.x) <= 2 && Vector3.Distance(transform.position, mScanner) <= 5)
-            {
-                nearby = true;
-                if(!squareActive)
-                    available = true;
-            }
-                
-            else if(Mathf.Abs(this.transform.position.z - mScanner.z) <= 2 && Vector3.Distance(transform.position, mScanner) <= 5)
-            {
-                nearby = true;
-                if(!squareActive)
-                    available = true;
-            }
-            else
-            {
-                nearby = false;
-                available = false;
-            }
+        // if scanner is currently ontop of this, not available
+        // also turn it active
+        else if(Vector3.Distance(this.transform.position, mScanner )<= 1f)
+        {
+            squareActive = true;
+            available = false;
+            nearby = false;
+        }
+        // if the scanner is not ontop but still close enough, is available
+        else if(Mathf.Abs(this.transform.position.x - mScanner.x) <= 2 && Vector3.Distance(transform.position, mScanner) <= 5)
+        {
+            nearby = true;
+            if(!squareActive)
+                available = true;
+        }
+            
+        else if(Mathf.Abs(this.transform.position.z - mScanner.z) <= 2 && Vector3.Distance(transform.position, mScanner) <= 5)
+        {
+            nearby = true;
+            if(!squareActive)
+                available = true;
+        }
+        else
+        {
+            nearby = false;
+            available = false;
+        }
         
     }
 

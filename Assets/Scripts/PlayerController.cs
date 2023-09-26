@@ -154,7 +154,7 @@ public class PlayerController : MonoBehaviour
         {
             fruit = gm.activeItems[currentFruit];
             // tick up fruit counter
-            if(gm.activeItems[currentFruit+1] != null)
+            if(gm.activeItems[currentFruit] != null)
                 currentFruit++;
 
             //wait until player is comfortably in the square
@@ -175,8 +175,8 @@ public class PlayerController : MonoBehaviour
     private IEnumerator AdjustSpeed()
     {
         //adjust speed of player when dodging a dangerous thing
-        rotationSpeed = 250;
-        moveSpeed = 14;
+        rotationSpeed = 300;
+        moveSpeed = 18;
         //if player is still in the dangerous square, wait until they move
         if(!moving)
             yield return new WaitUntil(() => moving);

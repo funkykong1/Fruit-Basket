@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
     public void NextStage()
     {
         difficulty++;
-        StartGame();
+        StartCoroutine(SpawnTarget());
         //if difficulty such and so, change to a bigger map?
         //add bad items to pool?
         if(difficulty >= 5)
@@ -110,7 +110,13 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SpawnTarget()
     {
-        yield return new WaitForSeconds(2);
+        //reset square active status
+        foreach (GameObject square in allSquares)
+        {
+            square.GetComponent<Square>().squareActive = false;
+        }
+        
+        yield return new WaitForSeconds(0.5f);
 
         //drop 'difficulty' amount of fruits
         for (int i = 0; i < difficulty; i++)

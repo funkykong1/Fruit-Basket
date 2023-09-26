@@ -18,6 +18,9 @@ public class Item : MonoBehaviour
     Vector3[] vertices;
     Color32[] colors;
     Color32 black;
+    [Header("Current Distance")]
+    [SerializeField]private float dist;
+
 
     //init
     void Awake()
@@ -32,7 +35,7 @@ public class Item : MonoBehaviour
     {
 
         //Change y spawn position for each prefab
-        ySpawnPos = 20;
+        ySpawnPos = 30;
 
         //get colors and vertices of mesh
         Vector3[] vertices = mesh.vertices;
@@ -42,10 +45,25 @@ public class Item : MonoBehaviour
 
         //add rotation to object, remove gravity and move it high, add mass too
         rb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
-        rb.mass = 7;
-        rb.drag = 0.2f;
+        rb.angularDrag = 0.001f;
         rb.useGravity = false;
         transform.position = new Vector3(transform.position.x, ySpawnPos, transform.position.z);
+    }
+
+    void FixedUpdate()
+    {
+        //Use distance to adjust mass, item falls slower when higher up
+        dist = Vector3.Distance(GameObject.Find("Player").transform.position, transform.position);
+        if(dist < 20)
+        {
+            rb.mass = 5;
+        }
+        else
+        {
+            rb.mass = 15;
+        }
+        //add some drag too for more smoothness
+        rb.drag = dist/100;
     }
 
     //If hits player
