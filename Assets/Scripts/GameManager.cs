@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
     {
         //doesnt work without this
         yield return new WaitForSeconds(0.1f);
-        
+
         //reset square active status
         foreach (GameObject square in allSquares)
         {
@@ -251,7 +251,7 @@ public class GameManager : MonoBehaviour
             if(activeItems[i] != null)
             {
                 activeItems[i].GetComponent<Rigidbody>().useGravity = true;
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.4f);
             }
         }
     }
