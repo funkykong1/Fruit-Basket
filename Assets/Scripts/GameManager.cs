@@ -229,10 +229,16 @@ public class GameManager : MonoBehaviour
             return;
         gameActive = false;
 
+        //turtle scared
+        player.GetComponentInChildren<Animator>().SetTrigger("Lose");
+
+        //enable gameover canvas
         loser.enabled = true;
         
+        //drop remaining items
         StartCoroutine(DropAll());
 
+        //display gameover text
         TextMeshProUGUI text = GameObject.Find("Reason Text").GetComponent<TextMeshProUGUI>();
         text.text = "you " + reason;
 

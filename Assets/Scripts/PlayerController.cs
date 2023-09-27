@@ -132,7 +132,6 @@ public class PlayerController : MonoBehaviour
 
         //if remaining distance sufficiently small, stop
         var distance = Vector3.Distance(transform.position, mSquare);
-
         if(distance > 0.05f)
         {
             transform.position = Vector3.SmoothDamp(transform.position, mSquare, ref velocity, movementSmoothing, moveSpeed);
