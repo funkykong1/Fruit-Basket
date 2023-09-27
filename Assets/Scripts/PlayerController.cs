@@ -106,7 +106,6 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
-
         //if no square ahead, do not move and let player rotate
         if(targetSquare == null)
         {
@@ -114,15 +113,19 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        else if(!fruitFalling)
+            //drop fruits via player movement
+            StartCoroutine(DropFruit());
+
+            
+        //smaller sphere collider
+        GetComponent<SphereCollider>().radius = 0.3f;
         this.GetComponent<BoxCollider>().enabled = false;
+
         //avoid editing the player's y value
         Vector3 mSquare = new Vector3(targetSquare.transform.position.x, transform.position.y, targetSquare.transform.position.z);
         //Only account for x and z axis for distance calculation
         Vector3 mPlayer = new Vector3(transform.position.x, targetSquare.transform.position.y, transform.position.z);
-
-        //drop fruits via player movement
-        if(!fruitFalling)
-            StartCoroutine(DropFruit());
 
         //if remaining distance sufficiently small, stop
         var distance = Vector3.Distance(transform.position, mSquare);
@@ -135,12 +138,17 @@ public class PlayerController : MonoBehaviour
         {
             moving = false;
             this.GetComponent<BoxCollider>().enabled = true;
+            GetComponent<SphereCollider>().radius = 0.5f;
         }
                
     }
 
     private IEnumerator DropFruit()
     {
+        //if no target square, stop coroutine
+        if(!targetSquare)
+            yield break;
+
         fruitFalling = true;
         // fetch next fruit
         GameObject fruit = null;
@@ -149,6 +157,7 @@ public class PlayerController : MonoBehaviour
             fruit = gm.activeItems[currentFruit];
             // tick up fruit counter
             currentFruit++;
+            fruit.GetComponent<Rigidbody>().useGravity = true;
 
             //wait until player is comfortably in the square
             yield return new WaitUntil(() => !moving);
@@ -156,7 +165,6 @@ public class PlayerController : MonoBehaviour
             {
                 StartCoroutine(AdjustSpeed());
             }
-            fruit.GetComponent<Rigidbody>().useGravity = true;
             fruitFalling = false;
             
         }
@@ -167,12 +175,11 @@ public class PlayerController : MonoBehaviour
     //makes player faster for a bit
     private IEnumerator AdjustSpeed()
     {
-        //smaller sphere collider
-        GetComponent<SphereCollider>().radius = 0.3f;
 
         //adjust speed of player when dodging a dangerous thing
         rotationSpeed = 400;
         moveSpeed = 30;
+        
         //if player is still in the dangerous square, wait until they move
         if(!moving)
             yield return new WaitUntil(() => moving);
@@ -181,9 +188,8 @@ public class PlayerController : MonoBehaviour
         yield return new WaitUntil(() => !moving);
 
         //restore previous values
-        moveSpeed = 10;
-        rotationSpeed = 210;
-        GetComponent<SphereCollider>().radius = 0.5f;
+        moveSpeed = 11;
+        rotationSpeed = 240;
     }
 
     //detect square infront to move to
@@ -197,13 +203,10 @@ public class PlayerController : MonoBehaviour
     }
 
     //targetSquare nulled if rotating away from one
-    void OnTriggerLeave(Collider other)
+    void OnTriggerExit(Collider other)
     {
         if(other.CompareTag("Square"))
             targetSquare = null;
     }
-
-
-
 
 }

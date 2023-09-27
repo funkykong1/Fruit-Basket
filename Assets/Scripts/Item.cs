@@ -53,7 +53,7 @@ public class Item : MonoBehaviour
         rb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
         rb.angularDrag = 0.001f;
         rb.drag = 0.001f;
-        rb.mass = 15;
+        rb.mass = 20;
         rb.useGravity = false;
         transform.position = new Vector3(transform.position.x, ySpawnPos, transform.position.z);
     }
@@ -71,10 +71,10 @@ public class Item : MonoBehaviour
     //slightly adjust falling drag to give player more time to dodge
     private IEnumerator AdjustSpeed()
     {
-        rb.drag = 0.4f;
-        rb.mass = 12;
-        yield return new WaitForSeconds(0.2f);
+        rb.drag = 0.5f;
         rb.mass = 15;
+        yield return new WaitForSeconds(0.3f);
+        rb.mass = 16;
         rb.drag = 0.01f;
     }
 
