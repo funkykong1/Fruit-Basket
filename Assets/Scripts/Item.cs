@@ -71,10 +71,10 @@ public class Item : MonoBehaviour
     //slightly adjust falling drag to give player more time to dodge
     private IEnumerator AdjustSpeed()
     {
-        rb.drag = 0.5f;
-        rb.mass = 15;
+        rb.drag = 0.65f;
+        rb.mass = 18;
         yield return new WaitForSeconds(0.3f);
-        rb.mass = 16;
+        rb.mass = 19;
         rb.drag = 0.01f;
     }
 

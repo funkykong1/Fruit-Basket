@@ -26,14 +26,14 @@ public class PlayerController : MonoBehaviour
     Vector3 dir, velocity;
 
     private GameManager gm;
-
     public int currentFruit;
+    private Animator anim;
 
 
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        anim = GetComponentInChildren<Animator>();
         gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
@@ -114,10 +114,13 @@ public class PlayerController : MonoBehaviour
         }
 
         else if(!fruitFalling)
+        {
             //drop fruits via player movement
             StartCoroutine(DropFruit());
+            anim.SetTrigger("Walk");
+        }
 
-            
+
         //smaller sphere collider
         GetComponent<SphereCollider>().radius = 0.3f;
         this.GetComponent<BoxCollider>().enabled = false;
@@ -139,6 +142,7 @@ public class PlayerController : MonoBehaviour
             moving = false;
             this.GetComponent<BoxCollider>().enabled = true;
             GetComponent<SphereCollider>().radius = 0.5f;
+            anim.SetTrigger("Stand");
         }
                
     }
@@ -161,6 +165,8 @@ public class PlayerController : MonoBehaviour
 
             //wait until player is comfortably in the square
             yield return new WaitUntil(() => !moving);
+
+            //player moves faster if a bad item is coming
             if(fruit.CompareTag("Bad Item"))
             {
                 StartCoroutine(AdjustSpeed());
@@ -168,6 +174,7 @@ public class PlayerController : MonoBehaviour
             fruitFalling = false;
             
         }
+        //if fruit null, game inactive
         else
             yield return gm.gameActive = false;
     }
@@ -175,7 +182,6 @@ public class PlayerController : MonoBehaviour
     //makes player faster for a bit
     private IEnumerator AdjustSpeed()
     {
-
         //adjust speed of player when dodging a dangerous thing
         rotationSpeed = 400;
         moveSpeed = 30;
@@ -184,12 +190,15 @@ public class PlayerController : MonoBehaviour
         if(!moving)
             yield return new WaitUntil(() => moving);
 
+        anim.SetTrigger("Run");
+
         //if player is moving, wait until they stop in the next square
         yield return new WaitUntil(() => !moving);
 
         //restore previous values
         moveSpeed = 11;
         rotationSpeed = 240;
+        anim.SetTrigger("Stand");
     }
 
     //detect square infront to move to
