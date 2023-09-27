@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         m_EulerAngleVelocity = new Vector3(0,100,0);
-        dir = Vector3.back;
+        dir = Vector3.left;
         velocity = Vector3.zero;
     }
 

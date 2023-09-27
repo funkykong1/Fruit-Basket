@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
         sat = 23;
         brt = 100;
 
+        DontDestroyOnLoad(this.gameObject);
     }
 
     // Start is called before the first frame update
@@ -247,7 +248,11 @@ public class GameManager : MonoBehaviour
 
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        score = 0;
+        UpdateScore(0);
+        difficulty--;
+        NextStage();
     }
 
     IEnumerator DropAll()
