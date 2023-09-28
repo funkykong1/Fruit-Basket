@@ -78,20 +78,53 @@ public class Item : MonoBehaviour
         rb.drag = 0.01f;
     }
 
+    private void PlaySound(bool good)
+    {
+        //references to necessary components
+        AudioSource source;
+        GameObject audio = new GameObject("TEMP AUDIO");
+        AudioManager manager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
+
+        Destroy(audio, 3);
+
+        Instantiate(audio, new Vector3(transform.position.x, ySpawnPos, transform.position.z), Quaternion.identity);
+        source = audio.AddComponent<AudioSource>();
+
+        if(good)
+            source.clip = manager.goodClips[Random.Range(0,manager.goodClips.Length)];
+        else
+            source.clip = manager.badClips[Random.Range(0,manager.badClips.Length)];
+
+        source.Play();
+    }
     //If hits player
     void OnTriggerEnter(Collider other)
     {
-        if(other == sphere)
+        if(other == sphere && gm.gameActive)
         {
             if(this.tag == "Good Item")
             {
                 gm.UpdateScore(1);
+                PlaySound(true);
             }
             else
             {
                 gm.EndGame("stood under a dangerous item!");
+                PlaySound(false);
             }
-            Destroy(gameObject);
+            rend.enabled = false;
+
+            //get collider in this item
+            Collider col;
+            if(GetComponent<Collider>())
+                col = GetComponent<Collider>();
+            else
+                col = GetComponentInChildren<Collider>();
+
+
+            col.enabled = false;
+
+            Destroy(gameObject, 2);
         }
     }
 
@@ -100,11 +133,13 @@ public class Item : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Ground"))
         {
-            if(gameObject.CompareTag("Good Item"))
-                gm.EndGame("let food go to waste!");
-            else
-                gm.UpdateScore(1);
-
+            if(gm.gameActive)
+            {
+                if(gameObject.CompareTag("Good Item"))
+                    gm.EndGame("let food go to waste!");
+                else
+                    gm.UpdateScore(1);
+            }
             rb.mass = 3;
             Destroy(gameObject,1.5f);
         }

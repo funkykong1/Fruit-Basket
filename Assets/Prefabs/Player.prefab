@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459783119}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.472, z: -0.201}
+  m_LocalPosition: {x: 0, y: -0.468, z: -0.201}
   m_LocalScale: {x: 2, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 1858620722391229346}
@@ -132,8 +132,8 @@ MonoBehaviour:
   movementSmoothing: 0.278
   moving: 0
   fruitFalling: 0
-  rotationSpeed: 240
-  moveSpeed: 11
+  rotationSpeed: 250
+  moveSpeed: 12
   targetSquare: {fileID: 0}
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
   currentFruit: 0
@@ -177,8 +177,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Radius: 0.7
+  m_Center: {x: 0, y: 0, z: -0.2}
 --- !u!1 &6694602087957476956
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,7 +769,7 @@ Transform:
   m_GameObject: {fileID: 6694971060393747760}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1.304, z: -0.26}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.1, y: 1, z: 1.1}
   m_Children:
   - {fileID: 6693442687777983000}
   - {fileID: 6693354891556793502}

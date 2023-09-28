@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public bool moving, fruitFalling;
 
     //how fast is rotation
-    public float rotationSpeed = 150f, moveSpeed = 5f;
+    public float rotationSpeed, moveSpeed;
 
     //which square should player go to
     public GameObject targetSquare;
@@ -181,6 +181,9 @@ public class PlayerController : MonoBehaviour
     //makes player faster for a bit
     private IEnumerator AdjustSpeed()
     {
+        //get normal speed values
+        float r = rotationSpeed;
+        float s = moveSpeed;
         //adjust speed of player when dodging a dangerous thing
         rotationSpeed = 400;
         moveSpeed = 30;
@@ -195,8 +198,8 @@ public class PlayerController : MonoBehaviour
         yield return new WaitUntil(() => !moving);
 
         //restore previous values
-        moveSpeed = 11;
-        rotationSpeed = 240;
+        moveSpeed = s;
+        rotationSpeed = r;
         anim.SetTrigger("Stand");
     }
 
