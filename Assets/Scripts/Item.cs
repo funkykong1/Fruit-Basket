@@ -12,7 +12,6 @@ public class Item : MonoBehaviour
     //how high should the thing spawn
     public float ySpawnPos;
 
-    private float decayTime = 5;
     private SphereCollider sphere;
     private Mesh mesh;
     Vector3[] vertices;
@@ -32,8 +31,11 @@ public class Item : MonoBehaviour
         mesh = (GetComponent<MeshFilter>().mesh) ? GetComponent<MeshFilter>().mesh: GetComponentInChildren<MeshFilter>().mesh;
         rend = (GetComponent<MeshRenderer>()) ? GetComponent<MeshRenderer>(): GetComponentInChildren<MeshRenderer>();
 
+        //gamemanager and player hitbox
         gm = GameObject.Find("Game Manager").GetComponent<GameManager>();   
         sphere = GameObject.Find("Player").GetComponent<SphereCollider>();
+
+        //fruits will not collide with eachother
         Physics.IgnoreLayerCollision(7,7, true);
     }
 
@@ -61,22 +63,24 @@ public class Item : MonoBehaviour
     void FixedUpdate()
     {
         dist = Vector3.Distance(transform.position, GameObject.Find("Player").transform.position);
-        if(dist < 11 && !running)
-        {
-            running = true;
-            //if game is over, dont bother
-            if(!gm.gameOver)
-                StartCoroutine(AdjustSpeed());
-        }
+    }
+
+    public void SpeedCoroutine()
+    {
+        if(!running)
+            StartCoroutine(AdjustSpeed());
+        running = true;
     }
 
     //slightly adjust falling drag to give player more time to dodge
+    //only applies if the fruit is in a northern square
     private IEnumerator AdjustSpeed()
     {
-        rb.drag = 0.65f;
-        rb.mass = 18;
-        yield return new WaitForSeconds(0.3f);
-        rb.mass = 19;
+        yield return new WaitUntil(() => dist < 11);
+        rb.drag = 1f;
+        rb.mass = 20;
+        yield return new WaitForSeconds(0.4f);
+        rb.mass = 25;
         rb.drag = 0.01f;
     }
 
@@ -150,6 +154,7 @@ public class Item : MonoBehaviour
     }
 
     //change mesh color 
+    //todo fix this
     private IEnumerator Death()
     {
         int i = 0;
@@ -158,7 +163,7 @@ public class Item : MonoBehaviour
             {
                 mesh.Clear(true);
                 mesh.vertices = vertices;
-                Color32.Lerp(colors[i], black, Time.deltaTime * decayTime);
+                Color32.Lerp(colors[i], black, Time.deltaTime * 5);
             }
         yield return null;
     }

@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
 
     public List<GameObject> activeItems;
-    public List<GameObject> allSquares;
+    public List<GameObject> allSquares, badSquares;
 
     [Header("List of valid nearby squares")]
     public List<GameObject> nextSquares;
@@ -109,15 +109,15 @@ public class GameManager : MonoBehaviour
     {
         //clear all lists and increase difficulty
         player.GetComponent<PlayerController>().currentFruit = 0;
-        activeItems.Clear();
-
         //destroy remaining items to avoid excess clutter
         for (int i = 0; i < activeItems.Count; i++)
         {
             if(activeItems[i] != null)
                 Destroy(activeItems[i]);
         }
+        activeItems.Clear();
         difficulty++;
+        scanner.transform.position = player.transform.position;
 
         StartCoroutine(SpawnTarget());
     }
@@ -161,6 +161,15 @@ public class GameManager : MonoBehaviour
                 index = Random.Range(0, goodItems.Length);
                 fruit = Instantiate(goodItems[index], square.transform.position, Quaternion.identity);
             }
+
+            if(badSquares.Contains(square))
+            {
+                //invoke speed coroutine within fruit
+                fruit.GetComponent<Item>().SpeedCoroutine();
+            }
+
+
+            //add fruit to the list
             activeItems.Add(fruit);
 
             //move scanner there and wait a bit
