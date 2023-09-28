@@ -8627,8 +8627,8 @@ MonoBehaviour:
   score: 0
   difficulty: 7
   spawnRate: 0.5
-  fadeTime: 2
   gameActive: 0
+  gameOver: 0
   scoreText: {fileID: 34772942}
   hue: 0
   sat: 0
@@ -16044,7 +16044,7 @@ GameObject:
   m_Layer: 0
   m_Name: Scanner
   m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

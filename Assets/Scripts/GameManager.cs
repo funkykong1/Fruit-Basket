@@ -29,9 +29,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Fruit spawn rate")]
     public float spawnRate;
-
-    public float fadeTime;
-    public bool gameActive;
+    public bool gameActive, gameOver;
     private GameObject scanner, player;
     public TextMeshProUGUI scoreText;
     private Light lamp;
@@ -112,6 +110,13 @@ public class GameManager : MonoBehaviour
         //clear all lists and increase difficulty
         player.GetComponent<PlayerController>().currentFruit = 0;
         activeItems.Clear();
+
+        //destroy remaining items to avoid excess clutter
+        for (int i = 0; i < activeItems.Count; i++)
+        {
+            if(activeItems[i] != null)
+                Destroy(activeItems[i]);
+        }
         difficulty++;
 
         StartCoroutine(SpawnTarget());
@@ -190,7 +195,6 @@ public class GameManager : MonoBehaviour
             StartCoroutine(LightsOn());
     }
 
-
     IEnumerator LightsOut()
     {
         //adjust brightness here
@@ -221,7 +225,8 @@ public class GameManager : MonoBehaviour
                     yield return new WaitForFixedUpdate();
                     yield return new WaitForFixedUpdate();
             }
-        nextButton.SetActive(true);
+        if(!gameOver)
+            nextButton.SetActive(true);
     }
 
     public void EndGame(string reason)
@@ -230,14 +235,14 @@ public class GameManager : MonoBehaviour
             return;
         gameActive = false;
 
+        //drop remaining items
+        StartCoroutine(DropAll());
+
         //turtle scared
         player.GetComponentInChildren<Animator>().SetTrigger("Lose");
 
         //enable gameover canvas
         loser.enabled = true;
-        
-        //drop remaining items
-        StartCoroutine(DropAll());
 
         //display gameover text
         TextMeshProUGUI text = GameObject.Find("Reason Text").GetComponent<TextMeshProUGUI>();
@@ -248,11 +253,30 @@ public class GameManager : MonoBehaviour
 
     public void Restart()
     {
+        StartCoroutine(isufmkjcd());
+    }
+    private IEnumerator isufmkjcd()
+    {
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+
+        //score reset
+        gameOver = true;
         score = 0;
         UpdateScore(0);
+
+        //difficulty lowered because nextstage adds to it
         difficulty--;
+        loser.enabled = false;
+
+        //wait until lights are on
+        StartCoroutine(LightsOn());
+        player.GetComponentInChildren<Animator>().SetTrigger("Stand");
+        yield return new WaitUntil(() => brt == 100);
+        yield return new WaitForSeconds(0.1f);
+        //then spawn more fruits
         NextStage();
+        gameOver = false;
     }
 
     IEnumerator DropAll()
@@ -262,7 +286,8 @@ public class GameManager : MonoBehaviour
             if(activeItems[i] != null)
             {
                 activeItems[i].GetComponent<Rigidbody>().useGravity = true;
-                yield return new WaitForSeconds(0.4f);
+                activeItems[i].GetComponent<Rigidbody>().mass = 30;
+                yield return new WaitForSeconds(0.2f);
             }
         }
     }

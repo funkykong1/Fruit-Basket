@@ -53,7 +53,7 @@ public class Item : MonoBehaviour
         rb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
         rb.angularDrag = 0.001f;
         rb.drag = 0.001f;
-        rb.mass = 20;
+        rb.mass = 27;
         rb.useGravity = false;
         transform.position = new Vector3(transform.position.x, ySpawnPos, transform.position.z);
     }
@@ -63,8 +63,10 @@ public class Item : MonoBehaviour
         dist = Vector3.Distance(transform.position, GameObject.Find("Player").transform.position);
         if(dist < 11 && !running)
         {
-            StartCoroutine(AdjustSpeed());
             running = true;
+            //if game is over, dont bother
+            if(!gm.gameOver)
+                StartCoroutine(AdjustSpeed());
         }
     }
 
@@ -85,10 +87,11 @@ public class Item : MonoBehaviour
         GameObject audio = new GameObject("TEMP AUDIO");
         AudioManager manager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
 
-        Destroy(audio, 3);
+        Destroy(audio, 1.5f);
 
         Instantiate(audio, new Vector3(transform.position.x, ySpawnPos, transform.position.z), Quaternion.identity);
-        source = audio.AddComponent<AudioSource>();
+        audio.AddComponent<AudioSource>();
+        source = audio.GetComponent<AudioSource>();
 
         if(good)
             source.clip = manager.goodClips[Random.Range(0,manager.goodClips.Length)];

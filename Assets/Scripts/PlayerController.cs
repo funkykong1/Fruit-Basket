@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     private GameManager gm;
     public int currentFruit;
-    private Animator anim;
+    public Animator anim;
 
 
 
@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviour
         float r = rotationSpeed;
         float s = moveSpeed;
         //adjust speed of player when dodging a dangerous thing
-        rotationSpeed = 425;
+        rotationSpeed = 500;
         moveSpeed = 32;
         
         //if player is still in the dangerous square, wait until they move
