@@ -140,7 +140,7 @@ public class PlayerController : MonoBehaviour
         {
             moving = false;
             this.GetComponent<BoxCollider>().enabled = true;
-            GetComponent<SphereCollider>().radius = 0.5f;
+            GetComponent<SphereCollider>().radius = 0.7f;
             anim.SetTrigger("Stand");
         }
                
@@ -185,8 +185,8 @@ public class PlayerController : MonoBehaviour
         float r = rotationSpeed;
         float s = moveSpeed;
         //adjust speed of player when dodging a dangerous thing
-        rotationSpeed = 400;
-        moveSpeed = 30;
+        rotationSpeed = 425;
+        moveSpeed = 32;
         
         //if player is still in the dangerous square, wait until they move
         if(!moving)
