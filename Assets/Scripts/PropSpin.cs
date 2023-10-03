@@ -5,7 +5,7 @@ using UnityEngine;
 public class PropSpin : MonoBehaviour
 {
 
-    private float maxTorque = 5;
+    private float maxTorque = 4;
     // Start is called before the first frame update
     void Start()
     {

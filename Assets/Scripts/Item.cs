@@ -56,7 +56,7 @@ public class Item : MonoBehaviour
         rb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
         rb.angularDrag = 0.001f;
         rb.drag = 0.001f;
-        rb.mass = 20;
+        rb.mass = 30;
         rb.useGravity = false;
         transform.position = new Vector3(transform.position.x, ySpawnPos, transform.position.z);
     }
@@ -83,8 +83,8 @@ public class Item : MonoBehaviour
     private IEnumerator AdjustSpeed()
     {
         yield return new WaitUntil(() => dist < 11);
-        rb.drag = 2f;
-        yield return new WaitForSeconds(0.4f);
+        rb.drag = 2.5f;
+        yield return new WaitForSeconds(0.5f);
         rb.drag = 0.01f;
     }
 
