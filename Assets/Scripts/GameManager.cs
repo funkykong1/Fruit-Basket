@@ -62,7 +62,6 @@ public class GameManager : MonoBehaviour
         sat = 23;
         brt = 100;
 
-        DontDestroyOnLoad(this.gameObject);
     }
 
     // Start is called before the first frame update
@@ -101,6 +100,7 @@ public class GameManager : MonoBehaviour
         player.transform.position = new Vector3(rnd.transform.position.x, player.transform.position.y, rnd.transform.position.z);
         scanner.transform.position = player.transform.position;
         start.enabled = false;
+        GameObject.Find("Cool Camera").SetActive(false);
 
         StartCoroutine(SpawnTarget());
     }
@@ -265,6 +265,12 @@ public class GameManager : MonoBehaviour
         TextMeshProUGUI text = GameObject.Find("Reason Text").GetComponent<TextMeshProUGUI>();
         text.text = "you " + reason;
 
+        //reset square active status
+        foreach (GameObject square in allSquares)
+        {
+            square.GetComponent<Square>().squareActive = false;
+        }
+
 
     }
 
@@ -288,7 +294,7 @@ public class GameManager : MonoBehaviour
 
         //wait until lights are on
         StartCoroutine(LightsOn());
-        player.GetComponentInChildren<Animator>().SetTrigger("Stand");
+        player.GetComponentInChildren<Animator>().SetTrigger("Retry");
         yield return new WaitUntil(() => brt == 100);
         yield return new WaitForSeconds(0.1f);
         //then spawn more fruits
@@ -304,7 +310,7 @@ public class GameManager : MonoBehaviour
             {
                 activeItems[i].GetComponent<Rigidbody>().useGravity = true;
                 activeItems[i].GetComponent<Rigidbody>().mass = 30;
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(0.3f);
             }
         }
     }

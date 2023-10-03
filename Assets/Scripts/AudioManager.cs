@@ -5,7 +5,7 @@ using UnityEditor.Audio;
 public class AudioManager : MonoBehaviour
 {
     AudioSource source, musicSource;
-    public AudioClip[] badClips, goodClips, UIClips, music;
+    public AudioClip[] badClips, goodClips, UIClips, music, groundClips;
 
     void Awake()
     {

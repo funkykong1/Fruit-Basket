@@ -5,7 +5,7 @@ using UnityEngine;
 public class AudioThing : MonoBehaviour
 {
 
-    public bool good;
+    public int number;
     void Awake()
     {
         PlayAudio();
@@ -17,10 +17,12 @@ public class AudioThing : MonoBehaviour
         AudioManager manager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         
 
-        if(good)
+        if(number == 1)
             source.clip = manager.goodClips[Random.Range(0,manager.goodClips.Length)];
-        else
+        else if(number == 0)
             source.clip = manager.badClips[Random.Range(0,manager.badClips.Length)];
+        else
+            source.clip = manager.groundClips[Random.Range(0,manager.groundClips.Length)];
 
         source.volume = 0.07f;
 

@@ -94,7 +94,7 @@ public class Item : MonoBehaviour
         falling = true;
         for (int i = 0; i < 10; i++)
         {
-            int j = 5;
+            int j = 7;
             if (gameObject.CompareTag("Good Item"))
                 j = 10;
             
@@ -103,11 +103,11 @@ public class Item : MonoBehaviour
         yield return null;
     }
 
-    private void PlaySound(bool good)
+    private void PlaySound(int good)
     {
         //instantiate audio instance and tell it if fruit is good or bad
         GameObject at = audioThing;
-        at.GetComponent<AudioThing>().good = good;
+        at.GetComponent<AudioThing>().number = good;
         Instantiate(at);
     }
     //If hits player
@@ -118,12 +118,12 @@ public class Item : MonoBehaviour
             if(this.tag == "Good Item")
             {
                 gm.UpdateScore(1);
-                PlaySound(true);
+                PlaySound(1);
             }
             else
             {
                 gm.EndGame("stood under a dangerous item!");
-                PlaySound(false);
+                PlaySound(0);
             }
             Destroy(gameObject);
         }
@@ -139,12 +139,13 @@ public class Item : MonoBehaviour
                 if(gameObject.CompareTag("Good Item"))
                 {
                     gm.EndGame("let food go to waste!");
-                    PlaySound(false);        
+                    PlaySound(0);        
                 }
                     
                 else
                 {
                     gm.UpdateScore(1);
+                    PlaySound(2);
                 }
                     
             }

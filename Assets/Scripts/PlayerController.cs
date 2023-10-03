@@ -29,12 +29,17 @@ public class PlayerController : MonoBehaviour
     public int currentFruit;
     public Animator anim;
 
+    [SerializeField]
+    private AudioClip[] grass;
+    private AudioSource source;
+
 
 
     void Awake()
     {
         anim = GetComponentInChildren<Animator>();
         gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        source = GetComponent<AudioSource>();
     }
 
     // Start is called before the first frame update
@@ -69,6 +74,7 @@ public class PlayerController : MonoBehaviour
             {
                 dir = Vector3.forward;
                 moving = true;
+                StartCoroutine(Walk(false));
             }
                 
 
@@ -76,6 +82,7 @@ public class PlayerController : MonoBehaviour
             {
                 dir = Vector3.left;
                 moving = true;
+                StartCoroutine(Walk(false));
             }
                 
                 
@@ -83,6 +90,7 @@ public class PlayerController : MonoBehaviour
             {
                 dir = Vector3.back;
                 moving = true;
+                StartCoroutine(Walk(false));
             }
                 
                 
@@ -90,6 +98,7 @@ public class PlayerController : MonoBehaviour
             {
                 dir = Vector3.right;
                 moving = true;
+                StartCoroutine(Walk(false));
             }
         }
 
@@ -117,8 +126,6 @@ public class PlayerController : MonoBehaviour
             //drop fruits via player movement
             if(currentFruit < gm.activeItems.Count)
                 StartCoroutine(DropFruit());
-
-            anim.SetTrigger("Walk");
         }
 
 
@@ -142,7 +149,6 @@ public class PlayerController : MonoBehaviour
             moving = false;
             this.GetComponent<BoxCollider>().enabled = true;
             GetComponent<SphereCollider>().radius = 0.7f;
-            anim.SetTrigger("Stand");
         }
                
     }
@@ -189,7 +195,7 @@ public class PlayerController : MonoBehaviour
         if(!moving)
             yield return new WaitUntil(() => moving);
 
-        anim.SetTrigger("Run");
+        StartCoroutine(Walk(true));
 
         //if player is moving, wait until they stop in the next square
         yield return new WaitUntil(() => !moving);
@@ -197,8 +203,28 @@ public class PlayerController : MonoBehaviour
         //restore previous values
         moveSpeed = s;
         rotationSpeed = r;
+    }
+
+    //walking/running animation + sound
+    private IEnumerator Walk(bool fast)
+    {
+        if(fast)
+        {
+            source.clip = grass[1];
+            anim.SetTrigger("Run");
+        }
+        else
+        {
+            source.clip = grass[0];
+            anim.SetTrigger("Walk");
+        }
+        source.Play();
+        yield return new WaitForSeconds(0.2f);
+        yield return new WaitUntil(() => !moving);
+        source.Stop();
         anim.SetTrigger("Stand");
     }
+
 
     //detect square infront to move to
     void OnTriggerEnter(Collider other)
