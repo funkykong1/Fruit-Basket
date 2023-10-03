@@ -40,12 +40,15 @@ public class GameManager : MonoBehaviour
     //hsv values, shadow float, scale shadow with sat
     public float hue,sat,brt, sdw;
 
-    private Canvas start, loser;
+    private Canvas start, loser, adjust;
+
+    private bool hard;
 
     void Awake()
     {
         start = GameObject.Find("Menu Canvas").GetComponent<Canvas>();
         loser = GameObject.Find("Loser Canvas").GetComponent<Canvas>();
+        adjust = GameObject.Find("Adjustment Canvas").GetComponent<Canvas>();
 
         lamp = GameObject.Find("Directional Light").GetComponent<Light>();
 
@@ -93,6 +96,11 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void DifficultySet(bool h)
+    {
+        hard = h;
+    }
+
     public void StartGame()
     {
         //get pos of random square, place plr and scanner there
@@ -134,6 +142,9 @@ public class GameManager : MonoBehaviour
             square.GetComponent<Square>().squareActive = false;
         }
 
+        if(difficulty > 7)
+            spawnRate = 0.4f;
+
         player.GetComponent<PlayerController>().moving = false;
 
         //drop 'difficulty' amount of fruits
@@ -152,17 +163,34 @@ public class GameManager : MonoBehaviour
 
             int randomizer = 5;
 
-            //25% of items bad if difficulty really high
-            if(difficulty > 7)
-                randomizer = 4;
-
-            //20% of items are bad if difficulty high
-            if(difficulty > 4 && Random.Range(1,randomizer) == 1)
+            if(hard)
             {
-                //spawn a random BAD thing on a square
-                index = Random.Range(0, badItems.Length);
-                fruit = Instantiate(badItems[index], square.transform.position, Quaternion.identity);
+                //25% of items bad if difficulty really high
+                if(difficulty > 7)
+                    randomizer = 4;
+
+                //20% of items are bad if difficulty high
+                if(difficulty > 4 && Random.Range(1,randomizer) == 1)
+                {
+                    //spawn a random BAD thing on a square
+                    index = Random.Range(0, badItems.Length);
+                    fruit = Instantiate(badItems[index], square.transform.position, Quaternion.identity);
+                }
+                else
+                {
+                    //spawn a random good thing on a square
+                    index = Random.Range(0, goodItems.Length);
+                    fruit = Instantiate(goodItems[index], square.transform.position, Quaternion.identity);
+           
+                    if(badSquares.Contains(square))
+                    {
+                        //invoke speed coroutine within fruit
+                        fruit.GetComponent<Item>().SpeedCoroutine();
+                    }
+                }
             }
+
+            //if player chooses chill mode, skip bad items altogether
             else
             {
                 //spawn a random good thing on a square
@@ -170,13 +198,7 @@ public class GameManager : MonoBehaviour
                 fruit = Instantiate(goodItems[index], square.transform.position, Quaternion.identity);
             }
 
-            if(badSquares.Contains(square))
-            {
-                //invoke speed coroutine within fruit
-                fruit.GetComponent<Item>().SpeedCoroutine();
-            }
-
-
+        
             //add fruit to the list
             activeItems.Add(fruit);
 
@@ -224,7 +246,7 @@ public class GameManager : MonoBehaviour
                 }
                 //wait for 2 frames to slow down weather change
                 yield return new WaitForFixedUpdate();
-                yield return new WaitForFixedUpdate();
+                //yield return new WaitForFixedUpdate();
             }
         yield return gameActive = true;
     }
@@ -240,7 +262,7 @@ public class GameManager : MonoBehaviour
                         sat++;
                     }
                     yield return new WaitForFixedUpdate();
-                    yield return new WaitForFixedUpdate();
+                    //yield return new WaitForFixedUpdate();
             }
         if(!gameOver)
             nextButton.SetActive(true);
