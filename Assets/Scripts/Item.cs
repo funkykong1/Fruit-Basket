@@ -97,8 +97,6 @@ public class Item : MonoBehaviour
             int j = 5;
             if (gameObject.CompareTag("Good Item"))
                 j = 10;
-                
-            
             
             rb.AddForce(Vector3.down*j, ForceMode.Impulse);
         }

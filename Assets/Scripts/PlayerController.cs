@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
         else if(!fruitFalling)
         {
             //drop fruits via player movement
-            if(currentFruit <= gm.activeItems.Count)
+            if(currentFruit < gm.activeItems.Count)
                 StartCoroutine(DropFruit());
 
             anim.SetTrigger("Walk");

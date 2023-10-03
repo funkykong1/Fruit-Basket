@@ -141,6 +141,12 @@ public class GameManager : MonoBehaviour
         {
             //call for the next available square
             GameObject square = NextSquare();
+
+            //if no square available, move on
+            if(square == null)
+                break;
+
+                
             GameObject fruit;
             int index;
 
@@ -178,7 +184,7 @@ public class GameManager : MonoBehaviour
             scanner.transform.position = square.transform.position;
             yield return new WaitForSeconds(spawnRate);
         }
-        yield return new WaitForSeconds(3+difficulty/3);
+        yield return new WaitForSeconds(2+difficulty/3);
         StartCoroutine(LightsOut());
     
     }
@@ -314,11 +320,10 @@ public class GameManager : MonoBehaviour
             index = Random.Range(0, nextSquares.Count);
             return nextSquares[index];
         }
-        //if there arent any valid squares, just pick one nearby
+        //if there arent any valid squares, just stop spawning stuff
         else
         {
-            index = Random.Range(0, nearbySquares.Count);
-            return nearbySquares[index];
+            return null;
         }
     }
 }
