@@ -162,6 +162,7 @@ public class PlayerController : MonoBehaviour
         // tick up fruit counter
         currentFruit++;
         fruit.GetComponent<Rigidbody>().useGravity = true;
+        fruit.GetComponent<Rigidbody>().AddForce(Vector3.down*2, ForceMode.Force);
 
         //wait until player is comfortably in the square
         yield return new WaitUntil(() => !moving);

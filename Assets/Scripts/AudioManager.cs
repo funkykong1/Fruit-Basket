@@ -9,8 +9,8 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
-        source = GetComponent<AudioSource>();
-        musicSource = GetComponentInChildren<AudioSource>();
+        source = this.gameObject.GetComponent<AudioSource>();
+        musicSource = GameObject.Find("Music").GetComponent<AudioSource>();
     }
 
     void Start()
@@ -23,11 +23,5 @@ public class AudioManager : MonoBehaviour
     {
         source.clip = UIClips[0];
         source.Play();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
