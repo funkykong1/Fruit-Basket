@@ -62,7 +62,6 @@ public class PlayerController : MonoBehaviour
     //wasd and arrow key rotation
     void Rotation()
     {
-        
         //ignore input if already moving
         if(!moving)
         {
@@ -116,7 +115,7 @@ public class PlayerController : MonoBehaviour
         else if(!fruitFalling)
         {
             //drop fruits via player movement
-            if(gm.activeItems[currentFruit] != null)
+            if(currentFruit <= gm.activeItems.Count)
                 StartCoroutine(DropFruit());
 
             anim.SetTrigger("Walk");
@@ -162,7 +161,6 @@ public class PlayerController : MonoBehaviour
         // tick up fruit counter
         currentFruit++;
         fruit.GetComponent<Rigidbody>().useGravity = true;
-        fruit.GetComponent<Rigidbody>().AddForce(Vector3.down*2, ForceMode.Force);
 
         //wait until player is comfortably in the square
         yield return new WaitUntil(() => !moving);
@@ -184,8 +182,8 @@ public class PlayerController : MonoBehaviour
         float r = rotationSpeed;
         float s = moveSpeed;
         //adjust speed of player when dodging a dangerous thing
-        rotationSpeed = 500;
-        moveSpeed = 32;
+        rotationSpeed = 550;
+        moveSpeed = 36;
         
         //if player is still in the dangerous square, wait until they move
         if(!moving)

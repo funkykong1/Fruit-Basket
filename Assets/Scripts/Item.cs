@@ -20,7 +20,7 @@ public class Item : MonoBehaviour
     [Header("Current Distance")]
     [SerializeField]private float dist;
     private MeshRenderer rend;
-    bool running = false;
+    bool running = false, falling = false;
     public GameObject audioThing;
 
     //init
@@ -64,7 +64,12 @@ public class Item : MonoBehaviour
     void FixedUpdate()
     {
         dist = Vector3.Distance(transform.position, GameObject.Find("Player").transform.position);
+
+        if(rb.useGravity && !falling)
+            StartCoroutine(PushDown());
     }
+
+
 
     public void SpeedCoroutine()
     {
@@ -78,9 +83,26 @@ public class Item : MonoBehaviour
     private IEnumerator AdjustSpeed()
     {
         yield return new WaitUntil(() => dist < 11);
-        rb.drag = 1.5f;
+        rb.drag = 2f;
         yield return new WaitForSeconds(0.4f);
         rb.drag = 0.01f;
+    }
+
+    //make fruit fall faster for lesser waiting times
+    private IEnumerator PushDown()
+    {
+        falling = true;
+        for (int i = 0; i < 10; i++)
+        {
+            int j = 5;
+            if (gameObject.CompareTag("Good Item"))
+                j = 10;
+                
+            
+            
+            rb.AddForce(Vector3.down*j, ForceMode.Impulse);
+        }
+        yield return null;
     }
 
     private void PlaySound(bool good)

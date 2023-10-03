@@ -8744,7 +8744,7 @@ MonoBehaviour:
   nextSquares: []
   nearbySquares: []
   score: 0
-  difficulty: 3
+  difficulty: 8
   spawnRate: 0.5
   gameActive: 0
   gameOver: 0
@@ -15804,17 +15804,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1819586106}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 885602412}
   m_Father: {fileID: 214095590}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.38867775, y: 0.42651862}
-  m_AnchorMax: {x: 0.61044514, y: 0.57177675}
-  m_AnchoredPosition: {x: 1, y: -6}
-  m_SizeDelta: {x: -54, y: -23}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.5, y: -6.5}
+  m_SizeDelta: {x: 250, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1819586108
 MonoBehaviour:
@@ -18559,6 +18559,14 @@ PrefabInstance:
     - target: {fileID: 1858620722391229346, guid: e51b30ab04e055c41be0fc424caefb49, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1858620722391229350, guid: e51b30ab04e055c41be0fc424caefb49, type: 3}
+      propertyPath: moveSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1858620722391229350, guid: e51b30ab04e055c41be0fc424caefb49, type: 3}
+      propertyPath: rotationSpeed
+      value: 275
       objectReference: {fileID: 0}
     - target: {fileID: 1858620722391229355, guid: e51b30ab04e055c41be0fc424caefb49, type: 3}
       propertyPath: m_Name

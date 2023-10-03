@@ -147,11 +147,11 @@ public class GameManager : MonoBehaviour
             int randomizer = 5;
 
             //25% of items bad if difficulty really high
-            if(difficulty > 8)
+            if(difficulty > 7)
                 randomizer = 4;
 
             //20% of items are bad if difficulty high
-            if(difficulty > 5 && Random.Range(1,randomizer) == 1)
+            if(difficulty > 4 && Random.Range(1,randomizer) == 1)
             {
                 //spawn a random BAD thing on a square
                 index = Random.Range(0, badItems.Length);
