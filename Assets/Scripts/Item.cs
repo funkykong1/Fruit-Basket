@@ -21,6 +21,7 @@ public class Item : MonoBehaviour
     [SerializeField]private float dist;
     private MeshRenderer rend;
     bool running = false;
+    public GameObject audioThing;
 
     //init
     void Awake()
@@ -86,23 +87,10 @@ public class Item : MonoBehaviour
 
     private void PlaySound(bool good)
     {
-        //references to necessary components
-        AudioSource source;
-        GameObject audio = new GameObject("TEMP AUDIO");
-        AudioManager manager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
-
-        Destroy(audio, 1.5f);
-
-        Instantiate(audio, new Vector3(transform.position.x, ySpawnPos, transform.position.z), Quaternion.identity);
-        audio.AddComponent<AudioSource>();
-        source = audio.GetComponent<AudioSource>();
-
-        if(good)
-            source.clip = manager.goodClips[Random.Range(0,manager.goodClips.Length)];
-        else
-            source.clip = manager.badClips[Random.Range(0,manager.badClips.Length)];
-
-        source.Play();
+        //instantiate audio instance and tell it if fruit is good or bad
+        GameObject at = audioThing;
+        at.GetComponent<AudioThing>().good = good;
+        Instantiate(at);
     }
     //If hits player
     void OnTriggerEnter(Collider other)
@@ -119,19 +107,7 @@ public class Item : MonoBehaviour
                 gm.EndGame("stood under a dangerous item!");
                 PlaySound(false);
             }
-            rend.enabled = false;
-
-            //get collider in this item
-            Collider col;
-            if(GetComponent<Collider>())
-                col = GetComponent<Collider>();
-            else
-                col = GetComponentInChildren<Collider>();
-
-
-            col.enabled = false;
-
-            Destroy(gameObject, 2);
+            Destroy(gameObject);
         }
     }
 
@@ -143,12 +119,18 @@ public class Item : MonoBehaviour
             if(gm.gameActive)
             {
                 if(gameObject.CompareTag("Good Item"))
+                {
                     gm.EndGame("let food go to waste!");
+                    PlaySound(false);        
+                }
+                    
                 else
+                {
                     gm.UpdateScore(1);
+                }
+                    
             }
-            rb.mass = 3;
-            Destroy(gameObject,1.5f);
+            Destroy(gameObject);
         }
             
     }

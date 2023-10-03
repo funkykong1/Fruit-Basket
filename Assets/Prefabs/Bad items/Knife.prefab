@@ -160,6 +160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ySpawnPos: 0
   dist: 0
+  audioThing: {fileID: 3090460824977928116, guid: 5c3ed3d6a85ba3144abefae3b7771db6, type: 3}
 --- !u!33 &4054187559965585907
 MeshFilter:
   m_ObjectHideFlags: 0

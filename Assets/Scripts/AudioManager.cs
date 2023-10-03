@@ -15,8 +15,8 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        source.clip = music[0];
-        source.Play();
+        musicSource.clip = music[0];
+        musicSource.Play();
     }
 
     public void UISound()

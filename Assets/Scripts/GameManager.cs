@@ -134,6 +134,8 @@ public class GameManager : MonoBehaviour
             square.GetComponent<Square>().squareActive = false;
         }
 
+        player.GetComponent<PlayerController>().moving = false;
+
         //drop 'difficulty' amount of fruits
         for (int i = 0; i < difficulty; i++)
         {

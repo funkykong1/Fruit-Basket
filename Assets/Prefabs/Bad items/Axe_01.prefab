@@ -112,6 +112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ySpawnPos: 25
   dist: 0
+  audioThing: {fileID: 3090460824977928116, guid: 5c3ed3d6a85ba3144abefae3b7771db6, type: 3}
 --- !u!54 &3279752640602719556
 Rigidbody:
   m_ObjectHideFlags: 0

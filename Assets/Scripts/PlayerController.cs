@@ -116,7 +116,9 @@ public class PlayerController : MonoBehaviour
         else if(!fruitFalling)
         {
             //drop fruits via player movement
-            StartCoroutine(DropFruit());
+            if(gm.activeItems[currentFruit] != null)
+                StartCoroutine(DropFruit());
+
             anim.SetTrigger("Walk");
         }
 
@@ -155,27 +157,23 @@ public class PlayerController : MonoBehaviour
         fruitFalling = true;
         // fetch next fruit
         GameObject fruit = null;
-        if(gm.activeItems[currentFruit] != null)
+
+        fruit = gm.activeItems[currentFruit];
+        // tick up fruit counter
+        currentFruit++;
+        fruit.GetComponent<Rigidbody>().useGravity = true;
+
+        //wait until player is comfortably in the square
+        yield return new WaitUntil(() => !moving);
+
+        //player moves faster if a bad item is coming
+        if(fruit.CompareTag("Bad Item"))
         {
-            fruit = gm.activeItems[currentFruit];
-            // tick up fruit counter
-            currentFruit++;
-            fruit.GetComponent<Rigidbody>().useGravity = true;
-
-            //wait until player is comfortably in the square
-            yield return new WaitUntil(() => !moving);
-
-            //player moves faster if a bad item is coming
-            if(fruit.CompareTag("Bad Item"))
-            {
-                StartCoroutine(AdjustSpeed());
-            }
-            fruitFalling = false;
-            
+            StartCoroutine(AdjustSpeed());
         }
-        //if fruit null, game inactive
-        else
-            yield return gm.gameActive = false;
+        fruitFalling = false;
+            
+        
     }
 
     //makes player faster for a bit
