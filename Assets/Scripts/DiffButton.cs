@@ -24,6 +24,7 @@ public class DiffButton : MonoBehaviour
         }
 
         ToggleMeshes(false);
+        bg.SetActive(false);
 
     }
 

@@ -233,8 +233,6 @@ public class GameManager : MonoBehaviour
                 index = Random.Range(0, goodItems.Length);
                 fruit = Instantiate(goodItems[index], square.transform.position, Quaternion.identity);
             }
-
-        
             //add fruit to the list
             activeItems.Add(fruit);
 
@@ -382,6 +380,11 @@ public class GameManager : MonoBehaviour
         {
             index = Random.Range(0, nextSquares.Count);
             return nextSquares[index];
+        }
+        else if(activeItems.Count <= 0)
+        {
+            index = Random.Range(0,nearbySquares.Count);
+            return nearbySquares[index];
         }
         //if there arent any valid squares, just stop spawning stuff
         else

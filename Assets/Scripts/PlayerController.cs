@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour
     //how smoothly player should go to the next square
     [Range(0.1f, 0.6f)] [SerializeField] private float movementSmoothing = .05f;
 
-    //scheduled moving //is the next fruit falling?
-    public bool moving, fruitFalling;
+    //scheduled moving //is the next fruit falling? //Animator & sound coroutine control
+    public bool moving, fruitFalling, walking;
 
     //how fast is rotation
     public float rotationSpeed, moveSpeed, distance;
@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private AudioClip[] grass;
     private AudioSource source;
-
+    private Coroutine coroutine;
 
 
     void Awake()
@@ -42,7 +42,6 @@ public class PlayerController : MonoBehaviour
         source = GetComponent<AudioSource>();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         m_EulerAngleVelocity = new Vector3(0,100,0);
@@ -57,80 +56,65 @@ public class PlayerController : MonoBehaviour
             Rotation();
     }
 
-    void LateUpdate()
-    {
-        //if moving queued and not rotating
-        if(moving && transform.rotation == targetRotation)
-            Move();
-    }
-
     //wasd and arrow key rotation
     void Rotation()
     {
         //ignore input if already moving
-        if(!moving && !fruitFalling)
+        if(!moving)
         {
             if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                dir = Vector3.forward;
-                moving = true;
-                StartCoroutine(Walk(false));
+                StartCoroutine(Move(Vector3.forward));
             }
                 
 
             if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                dir = Vector3.left;
-                moving = true;
-                StartCoroutine(Walk(false));
+                StartCoroutine(Move(Vector3.left));
             }
                 
                 
             if(Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                dir = Vector3.back;
-                moving = true;
-                StartCoroutine(Walk(false));
+                StartCoroutine(Move(Vector3.back));           
             }
                 
                 
             if(Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
-                dir = Vector3.right;
-                moving = true;
-                StartCoroutine(Walk(false));
+                StartCoroutine(Move(Vector3.right));                
             }
-        }
+        }  
+    }
 
+    IEnumerator Move(Vector3 dir)
+    {
+        coroutine = StartCoroutine(Walk(false));
+        moving = true;
         //simple rotation manipulation
-        var step = rotationSpeed * Time.deltaTime;
         targetRotation = Quaternion.LookRotation(dir, Vector3.up);
 
         //rotate towards target direction
-        if(transform.rotation != targetRotation)
+        while(transform.rotation != targetRotation)
+        {
+            var step = rotationSpeed * Time.deltaTime;
             transform.rotation = Quaternion.RotateTowards(transform.rotation,targetRotation,step);
-            
-    }
-
-    void Move()
-    {
+            yield return new WaitForFixedUpdate();
+        }
+        
         //if no square ahead, do not move and let player rotate
         if(targetSquare == null)
         {
             moving = false;
-            this.GetComponent<BoxCollider>().enabled = true;
-            return;
+            yield break;
         }
 
-        else if(!fruitFalling)
-        {
-            //drop fruits via player movement
-            if(currentFruit < gm.activeItems.Count)
-                StartCoroutine(DropFruit());
-        }
+        //drop fruits via player movement
+        if(currentFruit < gm.activeItems.Count)
+            StartCoroutine(DropFruit());
 
 
-        //smaller sphere collider
+        //smaller sphere & box colliders
         GetComponent<SphereCollider>().radius = 0.3f;
         this.GetComponent<BoxCollider>().enabled = false;
 
@@ -141,26 +125,21 @@ public class PlayerController : MonoBehaviour
 
         //if remaining distance sufficiently small, stop
         distance = Vector3.Distance(transform.position, mSquare);
-        if(distance > 0.05f)
+
+        while(distance > 0.05f)
         {
+            mPlayer = new Vector3(transform.position.x, targetSquare.transform.position.y, transform.position.z);
+            distance = Vector3.Distance(transform.position, mSquare);
             transform.position = Vector3.SmoothDamp(transform.position, mSquare, ref velocity, movementSmoothing, moveSpeed);
+            yield return new WaitForFixedUpdate();
         }
-        else
-        {
-            moving = false;
-            this.GetComponent<BoxCollider>().enabled = true;
-            GetComponent<SphereCollider>().radius = 0.7f;
-        }
-               
+        this.GetComponent<BoxCollider>().enabled = true;
+        GetComponent<SphereCollider>().radius = 0.7f;
+        yield return moving = false;
     }
 
     private IEnumerator DropFruit()
     {
-        //if no target square, stop coroutine
-        if(!targetSquare)
-            yield break;
-
-        fruitFalling = true;
         // fetch next fruit
         GameObject fruit = null;
 
@@ -178,9 +157,6 @@ public class PlayerController : MonoBehaviour
             if(fruit.CompareTag("Bad Item"))
                 StartCoroutine(AdjustSpeed());
         
-        fruitFalling = false;
-            
-        
     }
 
     //makes player faster for a bit
@@ -197,6 +173,8 @@ public class PlayerController : MonoBehaviour
         if(!moving)
             yield return new WaitUntil(() => moving);
 
+        //stop walk coroutine and start running one
+        StopCoroutine(coroutine);
         StartCoroutine(Walk(true));
 
         //if player is moving, wait until they stop in the next square
@@ -241,7 +219,7 @@ public class PlayerController : MonoBehaviour
     //targetSquare nulled if rotating away from one
     void OnTriggerExit(Collider other)
     {
-        if(other.CompareTag("Square"))
+        if(other.CompareTag("Square") && transform.rotation != targetRotation)
             targetSquare = null;
     }
 

@@ -56,7 +56,7 @@ public class Item : MonoBehaviour
         rb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
         rb.angularDrag = 0.001f;
         rb.drag = 0.001f;
-        rb.mass = 30;
+        rb.mass = 35;
         rb.useGravity = false;
         transform.position = new Vector3(transform.position.x, ySpawnPos, transform.position.z);
     }
