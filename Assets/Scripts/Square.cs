@@ -25,6 +25,7 @@ public class Square : MonoBehaviour
     void Awake()
     {
         lr = GetComponent<LineRenderer>();
+        lr.enabled = false;
         player = GameObject.Find("Player");
         scanner = GameObject.Find("Scanner");
         gm = GameObject.Find("Game Manager").GetComponent<GameManager>();

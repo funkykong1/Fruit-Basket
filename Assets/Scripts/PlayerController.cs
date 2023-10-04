@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public bool moving, fruitFalling;
 
     //how fast is rotation
-    public float rotationSpeed, moveSpeed;
+    public float rotationSpeed, moveSpeed, distance;
 
     //which square should player go to
     public GameObject targetSquare;
@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
     void Rotation()
     {
         //ignore input if already moving
-        if(!moving)
+        if(!moving && !fruitFalling)
         {
             if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
@@ -118,6 +118,7 @@ public class PlayerController : MonoBehaviour
         if(targetSquare == null)
         {
             moving = false;
+            this.GetComponent<BoxCollider>().enabled = true;
             return;
         }
 
@@ -139,7 +140,7 @@ public class PlayerController : MonoBehaviour
         Vector3 mPlayer = new Vector3(transform.position.x, targetSquare.transform.position.y, transform.position.z);
 
         //if remaining distance sufficiently small, stop
-        var distance = Vector3.Distance(transform.position, mSquare);
+        distance = Vector3.Distance(transform.position, mSquare);
         if(distance > 0.05f)
         {
             transform.position = Vector3.SmoothDamp(transform.position, mSquare, ref velocity, movementSmoothing, moveSpeed);
@@ -171,11 +172,12 @@ public class PlayerController : MonoBehaviour
         //wait until player is comfortably in the square
         yield return new WaitUntil(() => !moving);
 
+        //Check if the fruit still exists
+        if(fruit)
         //player moves faster if a bad item is coming
-        if(fruit.CompareTag("Bad Item"))
-        {
-            StartCoroutine(AdjustSpeed());
-        }
+            if(fruit.CompareTag("Bad Item"))
+                StartCoroutine(AdjustSpeed());
+        
         fruitFalling = false;
             
         

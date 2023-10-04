@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using UnityEngine.SceneManagement;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +13,7 @@ public class GameManager : MonoBehaviour
 
 
     public List<GameObject> activeItems;
+
     public List<GameObject> allSquares, badSquares;
 
     [Header("List of valid nearby squares")]
@@ -31,53 +30,65 @@ public class GameManager : MonoBehaviour
     public float spawnRate;
     public bool gameActive, gameOver;
     private GameObject scanner, player;
-    public TextMeshProUGUI scoreText;
     private Light lamp;
-    private GameObject nextButton;
+    [SerializeField]
+    private GameObject[] maps;
 
     //rgb colors
     private Color bright = new Color32(255,237,197,255);
     //hsv values, shadow float, scale shadow with sat
     public float hue,sat,brt, sdw;
 
-    private Canvas start, loser, adjust;
-
+    private UIManager ui;
     private bool hard;
+    public int currentMap = 0;
+    private Vector3 cameraVel;
 
     void Awake()
     {
-        start = GameObject.Find("Menu Canvas").GetComponent<Canvas>();
-        loser = GameObject.Find("Loser Canvas").GetComponent<Canvas>();
-        adjust = GameObject.Find("Adjustment Canvas").GetComponent<Canvas>();
-
+        ui = GameObject.Find("UI Manager").GetComponent<UIManager>();
         lamp = GameObject.Find("Directional Light").GetComponent<Light>();
 
         scanner = GameObject.Find("Scanner");
         player = GameObject.Find("Player");
-        nextButton = GameObject.Find("Next Button");
 
-        nextButton.SetActive(false);
-
-        loser.enabled = false;
 
         //HSV light colors
         hue = 41;
         sat = 23;
         brt = 100;
 
+        currentMap = 0;
     }
 
     // Start is called before the first frame update
     void Start()
     {
+
+        cameraVel = Vector3.zero;
         score = 0;
         UpdateScore(0);
         gameActive = false;
         lamp.color = bright;
+        SquareThing();
+    }
+
+    //condensed square function
+    void SquareThing()
+    {
+        //clear lists, squares add themselves to the lists if near scanner
+        allSquares.Clear();
+        nearbySquares.Clear();
+        nextSquares.Clear();
+        badSquares.Clear();
+
         //catalog all squares
         foreach (GameObject square in GameObject.FindGameObjectsWithTag("Square"))
         {
             allSquares.Add(square);
+            //northern squares have a sphere collider, find and catalog them
+            if(square.transform.position.z > 3)
+                badSquares.Add(square);
         }
     }
 
@@ -107,7 +118,7 @@ public class GameManager : MonoBehaviour
         GameObject rnd = allSquares[Random.Range(0, allSquares.Count)];
         player.transform.position = new Vector3(rnd.transform.position.x, player.transform.position.y, rnd.transform.position.z);
         scanner.transform.position = player.transform.position;
-        start.enabled = false;
+        ui.adjust.enabled = false;
         GameObject.Find("Cool Camera").SetActive(false);
 
         StartCoroutine(SpawnTarget());
@@ -115,6 +126,12 @@ public class GameManager : MonoBehaviour
 
     public void NextStage()
     {
+        if(difficulty >= 8 && currentMap == 0)
+        {
+            StartCoroutine(ChangeMap());
+            return;
+        }
+
         //clear all lists and increase difficulty
         player.GetComponent<PlayerController>().currentFruit = 0;
         //destroy remaining items to avoid excess clutter
@@ -130,6 +147,25 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SpawnTarget());
     }
 
+    IEnumerator ChangeMap()
+    {
+        Destroy(maps[currentMap]);
+        currentMap = 1;
+        Instantiate(maps[currentMap]);
+
+        yield return new WaitForSeconds(0.2f);
+        SquareThing();
+
+        Vector3 newCameraPos = new Vector3(0, 28, -13);
+        GameObject camera = GameObject.Find("Main Camera");
+        while(Vector3.Distance(camera.transform.position, newCameraPos) > 0.05f)
+        {
+            camera.transform.position = Vector3.SmoothDamp(camera.transform.position, newCameraPos, ref cameraVel, 0.2f, 2);
+            yield return new WaitForFixedUpdate();
+        }
+        yield return new WaitUntil(() => Vector3.Distance(camera.transform.position, newCameraPos) < 0.05f);
+        NextStage();
+    }
 
     IEnumerator SpawnTarget()
     {
@@ -222,7 +258,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
         score += scoreToAdd;
-        scoreText.text = "Score: " + score;
+        ui.scoreText.text = "Score: " + score;
         int itemsLeft = 0;
 
         for (int i = 0; i < activeItems.Count; i++)
@@ -265,7 +301,7 @@ public class GameManager : MonoBehaviour
                     //yield return new WaitForFixedUpdate();
             }
         if(!gameOver)
-            nextButton.SetActive(true);
+            ui.nextButton.SetActive(true);
     }
 
     public void EndGame(string reason)
@@ -281,11 +317,10 @@ public class GameManager : MonoBehaviour
         player.GetComponentInChildren<Animator>().SetTrigger("Lose");
 
         //enable gameover canvas
-        loser.enabled = true;
+        ui.loser.enabled = true;
 
         //display gameover text
-        TextMeshProUGUI text = GameObject.Find("Reason Text").GetComponent<TextMeshProUGUI>();
-        text.text = "you " + reason;
+        ui.loseText.text = "you " + reason;
 
         //reset square active status
         foreach (GameObject square in allSquares)
@@ -312,7 +347,7 @@ public class GameManager : MonoBehaviour
 
         //difficulty lowered because nextstage adds to it
         difficulty--;
-        loser.enabled = false;
+        ui.loser.enabled = false;
 
         //wait until lights are on
         StartCoroutine(LightsOn());

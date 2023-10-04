@@ -7,7 +7,7 @@ public class PropSpin : MonoBehaviour
 
     private float maxTorque = 4;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         GetComponent<Rigidbody>().AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
     }
