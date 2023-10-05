@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     public float rotationSpeed, moveSpeed, distance;
 
     //which square should player go to
-    public GameObject targetSquare;
+    public GameObject targetSquare, currentSquare;
 
     //where player should be rotating to
     public Quaternion targetRotation;
@@ -115,16 +115,12 @@ public class PlayerController : MonoBehaviour
         //if no square ahead, do not move and let player rotate
         if(targetSquare == null)
         {
-            if(fruitFalling)
-            {
-                StopCoroutine("DropFruit");
-            }
             moving = false;
             yield break;
         }
 
 
-
+        currentSquare = targetSquare;
         //smaller sphere & box colliders
         GetComponent<SphereCollider>().radius = 0.3f;
         this.GetComponent<BoxCollider>().enabled = false;
@@ -158,7 +154,7 @@ public class PlayerController : MonoBehaviour
 
         fruit = gm.activeItems[currentFruit];
 
-        yield return new WaitUntil(() => targetSquare);
+        yield return new WaitUntil(() => targetSquare == currentSquare);
         // tick up fruit counter
         currentFruit++;
         fruit.GetComponent<Rigidbody>().useGravity = true;
