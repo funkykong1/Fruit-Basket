@@ -2459,24 +2459,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'How to play:
-
-
-    Catch all falling food items and avoid all dangerous
-    items
-
-    -
-
-    Memorize the path and which items to avoid by observing the
-    shadows
-
-    -
-
-    Quickly move to the next square to dodge bad items
-
-    -
-
-'
+  m_text: "How to play:\n\nMove with WASD or arrow keys\n -\nCatch all falling food
+    items and avoid all dangerous items\n-\nMemorize the path and which items to
+    avoid by observing the shadows\n-\nQuickly move to the next square to dodge bad
+    items\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2503,7 +2489,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 21.95
+  m_fontSize: 20.55
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1

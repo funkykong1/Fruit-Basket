@@ -119,6 +119,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        SquareThing();
+
         //clear all lists and increase difficulty
         player.GetComponent<PlayerController>().currentFruit = 0;
         //destroy remaining items to avoid excess clutter
@@ -338,8 +340,7 @@ public class GameManager : MonoBehaviour
         //wait until lights are on
         StartCoroutine(LightsOn());
         player.GetComponentInChildren<Animator>().SetTrigger("Retry");
-        yield return new WaitUntil(() => brt == 100);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(1.5f);
         //then spawn more fruits
         NextStage();
         gameOver = false;

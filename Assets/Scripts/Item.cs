@@ -92,6 +92,7 @@ public class Item : MonoBehaviour
     private IEnumerator PushDown()
     {
         falling = true;
+        //push fruit down 10 times
         for (int i = 0; i < 10; i++)
         {
             int j = 15;
