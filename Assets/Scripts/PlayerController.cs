@@ -89,9 +89,6 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Move(Vector3 dir)
     {
-        if(moving)
-            yield break;
-
         moving = true;
         coroutine = StartCoroutine(Walk(false));
 
