@@ -64,24 +64,28 @@ public class PlayerController : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
+                moving = true;
                 StartCoroutine(Move(Vector3.forward));
             }
                 
 
             if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
+                moving = true;
                 StartCoroutine(Move(Vector3.left));
             }
                 
                 
             if(Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
+                moving = true;
                 StartCoroutine(Move(Vector3.back));           
             }
                 
                 
             if(Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
+                moving = true;
                 StartCoroutine(Move(Vector3.right));                
             }
         }  
@@ -89,7 +93,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Move(Vector3 dir)
     {
-        moving = true;
+        //walk anim/sound
         coroutine = StartCoroutine(Walk(false));
 
         //simple rotation manipulation

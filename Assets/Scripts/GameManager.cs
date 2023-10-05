@@ -290,7 +290,10 @@ public class GameManager : MonoBehaviour
                     //yield return new WaitForFixedUpdate();
             }
         if(!gameOver)
-            ui.nextButton.SetActive(true);
+        {
+            yield return new WaitForSeconds(1);
+            NextStage();
+        }
     }
 
     public void EndGame(string reason)
