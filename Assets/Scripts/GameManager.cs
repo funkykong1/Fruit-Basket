@@ -35,9 +35,13 @@ public class GameManager : MonoBehaviour
     private GameObject[] maps;
 
     //rgb colors
-    private Color bright = new Color32(255,237,197,255);
+    private Color bright;
     //hsv values, shadow float, scale shadow with sat
     public float hue,sat,brt, sdw;
+
+    //dimmed values for saturation and brightness
+    //only used as reference
+    public float dSat, dBrt, increment;
 
     private UIManager ui;
     private bool hard;
@@ -54,9 +58,12 @@ public class GameManager : MonoBehaviour
 
 
         //HSV light colors
-        hue = 41;
-        sat = 23;
-        brt = 100;
+        hue = 40;
+        sat = 60;
+        brt = 75;
+
+        dSat = 0;
+        dBrt = 45;
 
         currentMap = 0;
     }
@@ -73,36 +80,16 @@ public class GameManager : MonoBehaviour
         SquareThing();
     }
 
-    //condensed square function
-    void SquareThing()
-    {
-        //clear lists, squares add themselves to the lists if near scanner
-        allSquares.Clear();
-        nearbySquares.Clear();
-        nextSquares.Clear();
-        badSquares.Clear();
-
-        //catalog all squares
-        foreach (GameObject square in GameObject.FindGameObjectsWithTag("Square"))
-        {
-            allSquares.Add(square);
-            //northern squares have a sphere collider, find and catalog them
-            if(square.transform.position.z > 3)
-                badSquares.Add(square);
-        }
-    }
 
     void Update()
     {
-        bright = Color.HSVToRGB(hue/360,sat/100,brt/100, false);
-        lamp.color = bright;
-
-        //shadows fade away with saturation
         if(sat > 0)
-            sdw = sat/23;
+            sdw = sat/60;
         else
             sdw = 0;
-
+        
+        bright = Color.HSVToRGB(hue/360,sat/100,brt/100, false);
+        lamp.color = bright;
         lamp.shadowStrength = sdw;
 
     }
@@ -271,14 +258,14 @@ public class GameManager : MonoBehaviour
     IEnumerator LightsOut()
     {
         //adjust brightness here
-        while(brt > 75)
+        while(sat > dSat)
             {
-                brt--;
-                if(sat > 0)
+                sat--;
+                if(brt > dBrt)
                 {
-                    sat--;
+                    brt--;
                 }
-                //wait for 2 frames to slow down weather change
+                //wait for a frame to slow down weather change
                 yield return new WaitForFixedUpdate();
                 //yield return new WaitForFixedUpdate();
             }
@@ -287,13 +274,14 @@ public class GameManager : MonoBehaviour
 
     IEnumerator LightsOn()
     {
+        
         gameActive = false;
-        while(brt < 100)
+        while(sat < 60)
             {
-                brt++;
-                    if(sat < 23)
+                sat++;
+                    if(brt < 75)
                     {
-                        sat++;
+                        brt++;
                     }
                     yield return new WaitForFixedUpdate();
                     //yield return new WaitForFixedUpdate();
@@ -390,6 +378,25 @@ public class GameManager : MonoBehaviour
         else
         {
             return null;
+        }
+    }
+
+    //condensed square function
+    void SquareThing()
+    {
+        //clear lists, squares add themselves to the lists if near scanner
+        allSquares.Clear();
+        nearbySquares.Clear();
+        nextSquares.Clear();
+        badSquares.Clear();
+
+        //catalog all squares
+        foreach (GameObject square in GameObject.FindGameObjectsWithTag("Square"))
+        {
+            allSquares.Add(square);
+            //northern squares have a sphere collider, find and catalog them
+            if(square.transform.position.z > 3)
+                badSquares.Add(square);
         }
     }
 }

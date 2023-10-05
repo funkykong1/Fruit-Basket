@@ -89,10 +89,19 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Move(Vector3 dir)
     {
-        coroutine = StartCoroutine(Walk(false));
+        if(moving)
+            yield break;
+
         moving = true;
+        coroutine = StartCoroutine(Walk(false));
+
         //simple rotation manipulation
         targetRotation = Quaternion.LookRotation(dir, Vector3.up);
+
+        //drop fruits via player movement
+        if(currentFruit < gm.activeItems.Count && !fruitFalling)
+            StartCoroutine(DropFruit());
+
 
         //rotate towards target direction
         while(transform.rotation != targetRotation)
@@ -105,13 +114,14 @@ public class PlayerController : MonoBehaviour
         //if no square ahead, do not move and let player rotate
         if(targetSquare == null)
         {
+            if(fruitFalling)
+            {
+                StopCoroutine("DropFruit");
+            }
             moving = false;
             yield break;
         }
 
-        //drop fruits via player movement
-        if(currentFruit < gm.activeItems.Count)
-            StartCoroutine(DropFruit());
 
 
         //smaller sphere & box colliders
@@ -133,6 +143,7 @@ public class PlayerController : MonoBehaviour
             transform.position = Vector3.SmoothDamp(transform.position, mSquare, ref velocity, movementSmoothing, moveSpeed);
             yield return new WaitForFixedUpdate();
         }
+        targetSquare = null;
         this.GetComponent<BoxCollider>().enabled = true;
         GetComponent<SphereCollider>().radius = 0.7f;
         yield return moving = false;
@@ -140,10 +151,13 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator DropFruit()
     {
+        fruitFalling = true;
         // fetch next fruit
         GameObject fruit = null;
 
         fruit = gm.activeItems[currentFruit];
+
+        yield return new WaitUntil(() => targetSquare);
         // tick up fruit counter
         currentFruit++;
         fruit.GetComponent<Rigidbody>().useGravity = true;
@@ -156,6 +170,8 @@ public class PlayerController : MonoBehaviour
         //player moves faster if a bad item is coming
             if(fruit.CompareTag("Bad Item"))
                 StartCoroutine(AdjustSpeed());
+
+        yield return fruitFalling = false;
         
     }
 

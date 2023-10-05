@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17276807, g: 0.21589197, b: 0.29782572, a: 1}
+  m_IndirectSpecularColor: {r: 0.43667555, g: 0.48427182, b: 0.5645241, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2703,7 +2703,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 352012906}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.0074176053, y: 0, z: 0, w: 0.9999725}
   m_LocalPosition: {x: 19.060001, y: 0, z: 8.559999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2735,7 +2735,7 @@ Transform:
   - {fileID: 1880477786}
   m_Father: {fileID: 0}
   m_RootOrder: 14
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.85, y: 0, z: 0}
 --- !u!1 &354530128
 GameObject:
   m_ObjectHideFlags: 0
@@ -4690,7 +4690,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.9281167, b: 0.773, a: 1}
+  m_Color: {r: 0.447, g: 0.447, b: 0.447, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -6302,7 +6302,7 @@ MonoBehaviour:
   nextSquares: []
   nearbySquares: []
   score: 0
-  difficulty: 3
+  difficulty: 8
   spawnRate: 0.5
   gameActive: 0
   gameOver: 0
@@ -6313,6 +6313,9 @@ MonoBehaviour:
   sat: 0
   brt: 0
   sdw: 0
+  dSat: 0
+  dBrt: 0
+  increment: 0
   currentMap: 0
 --- !u!4 &1007818829
 Transform:

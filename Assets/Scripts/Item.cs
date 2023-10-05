@@ -44,7 +44,7 @@ public class Item : MonoBehaviour
     {
 
         //Change y spawn position for each prefab
-        ySpawnPos = 26;
+        ySpawnPos = 31;
 
         //get colors and vertices of mesh
         Vector3[] vertices = mesh.vertices;
@@ -56,7 +56,7 @@ public class Item : MonoBehaviour
         rb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
         rb.angularDrag = 0.001f;
         rb.drag = 0.001f;
-        rb.mass = 35;
+        rb.mass = 25;
         rb.useGravity = false;
         transform.position = new Vector3(transform.position.x, ySpawnPos, transform.position.z);
     }
@@ -94,9 +94,9 @@ public class Item : MonoBehaviour
         falling = true;
         for (int i = 0; i < 10; i++)
         {
-            int j = 7;
+            int j = 15;
             if (gameObject.CompareTag("Good Item"))
-                j = 10;
+                j = 17;
             
             rb.AddForce(Vector3.down*j, ForceMode.Impulse);
         }
