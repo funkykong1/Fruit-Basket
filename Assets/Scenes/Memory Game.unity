@@ -6302,7 +6302,7 @@ MonoBehaviour:
   nextSquares: []
   nearbySquares: []
   score: 0
-  difficulty: 8
+  difficulty: 3
   spawnRate: 0.5
   gameActive: 0
   gameOver: 0

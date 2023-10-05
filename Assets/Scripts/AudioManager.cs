@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Audio;
+
 public class AudioManager : MonoBehaviour
 {
     AudioSource source, musicSource;
