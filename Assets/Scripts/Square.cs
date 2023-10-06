@@ -19,20 +19,21 @@ public class Square : MonoBehaviour
     //debug
     private LineRenderer lr;
     private GameManager gm;
+    private PlayerController plr;
 
     //vectors which ignore y-values
     Vector3 mPlayer, mScanner;
     void Awake()
     {
-        lr = GetComponent<LineRenderer>();
-        lr.enabled = false;
+        // lr = GetComponent<LineRenderer>();
+        // lr.enabled = false;
         player = GameObject.Find("Player");
         scanner = GameObject.Find("Scanner");
         gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
     void Start()
     {
-        lr.SetPosition(0, transform.position + Vector3.up);
+        // lr.SetPosition(0, transform.position + Vector3.up);
         squareActive = false;
         available = false;
         nearby = false;
@@ -48,10 +49,9 @@ public class Square : MonoBehaviour
         
 
         TrackPosition();
-        
         //DEBUG
         //UpdateLines();
-        lr.enabled = false;
+        //lr.enabled = false;
 
         UpdateLists();
     }
