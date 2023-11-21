@@ -138,6 +138,8 @@ MonoBehaviour:
   moveSpeed: 20
   distance: 0
   targetSquare: {fileID: 0}
+  currentSquare: {fileID: 0}
+  squares: []
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
   currentFruit: 0
   anim: {fileID: 0}

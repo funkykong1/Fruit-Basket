@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
     //which square should player go to
     public GameObject targetSquare, currentSquare;
+    public GameObject[] squares;
 
     //where player should be rotating to
     public Quaternion targetRotation;
@@ -56,6 +57,11 @@ public class PlayerController : MonoBehaviour
             Rotation();
     }
 
+    void FixedUpdate()
+    {
+        Physics.SyncTransforms();
+    }
+
     //wasd and arrow key rotation
     void Rotation()
     {
@@ -64,28 +70,24 @@ public class PlayerController : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                moving = true;
                 StartCoroutine(Move(Vector3.forward));
             }
                 
 
             if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                moving = true;
                 StartCoroutine(Move(Vector3.left));
             }
                 
                 
             if(Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                moving = true;
-                StartCoroutine(Move(Vector3.back));           
-            }
-                
+                StartCoroutine(Move(Vector3.back));
+            }      
+            
                 
             if(Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
-                moving = true;
                 StartCoroutine(Move(Vector3.right));                
             }
         }  
@@ -93,6 +95,9 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Move(Vector3 dir)
     {
+        if(moving)
+            yield break;
+        moving = true;
         //walk anim/sound
         coroutine = StartCoroutine(Walk(false));
 
@@ -137,12 +142,13 @@ public class PlayerController : MonoBehaviour
         {
             mPlayer = new Vector3(transform.position.x, targetSquare.transform.position.y, transform.position.z);
             distance = Vector3.Distance(transform.position, mSquare);
+
             transform.position = Vector3.SmoothDamp(transform.position, mSquare, ref velocity, movementSmoothing, moveSpeed);
             yield return new WaitForFixedUpdate();
         }
         targetSquare = null;
         this.GetComponent<BoxCollider>().enabled = true;
-        GetComponent<SphereCollider>().radius = 0.7f;
+        GetComponent<SphereCollider>().radius = 0.8f;
         yield return moving = false;
     }
 
@@ -237,3 +243,4 @@ public class PlayerController : MonoBehaviour
     }
 
 }
+
