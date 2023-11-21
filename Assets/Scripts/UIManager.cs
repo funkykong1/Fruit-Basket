@@ -8,12 +8,12 @@ using UnityEngine.EventSystems;
 //less clutter for gamemanager
 public class UIManager : MonoBehaviour
 {
+    //are these used for something???????????
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI loseText;
     public GameObject nextButton;
     internal Canvas start, loser, adjust;
-    private GameManager gm;
-    private DiffButton good,bad;
+
 
 
     void Awake()
@@ -22,9 +22,6 @@ public class UIManager : MonoBehaviour
         loser = GameObject.Find("Loser Canvas").GetComponent<Canvas>();
         adjust = GameObject.Find("Adjustment Canvas").GetComponent<Canvas>();
         nextButton = GameObject.Find("Next Button");
-
-        good = GameObject.Find("Easy Button").GetComponent<DiffButton>();
-        bad = GameObject.Find("Hard Button").GetComponent<DiffButton>();
     }
     // Start is called before the first frame update
     void Start()
@@ -38,5 +35,10 @@ public class UIManager : MonoBehaviour
     {
         start.enabled = false;
         adjust.enabled = true;
+        //deez nut
+#if UNITY_IOS || UNITY_ANDROID
+GameObject.Find("Easy Button").GetComponent<DiffButton>().ToggleMeshes(true);
+GameObject.Find("Hard Button").GetComponent<DiffButton>().ToggleMeshes(true);
+#endif
     }
 }
