@@ -22,18 +22,20 @@ public class DiffButton : MonoBehaviour
             bg = GameObject.Find("bg hard");
             go = GameObject.Find("Bad");
         }
-
+#if UNITY_IOS || UNITY_ANDROID
         ToggleMeshes(false);
         bg.SetActive(false);
-
+#endif
     }
 
     public void ToggleMeshes(bool toggle)
     {
+#if !UNITY_IOS || UNITY_ANDROID
         foreach (MeshRenderer item in go.GetComponentsInChildren<MeshRenderer>())
         {
             item.enabled = toggle;
         }
+#endif
     }
 
 }
