@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     public List<GameObject> activeItems;
 
-    public List<GameObject> allSquares, badSquares;
+    public List<GameObject> allSquares;
 
     [Header("List of valid nearby squares")]
     public List<GameObject> nextSquares;
@@ -159,7 +159,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SpawnTarget()
     {
-        //doesnt work without this
+        //doesnt work without this << wtf
         yield return new WaitForSeconds(0.1f);
 
         //reset square active status
@@ -168,8 +168,8 @@ public class GameManager : MonoBehaviour
             square.GetComponent<Square>().squareActive = false;
         }
 
-        if(difficulty > 7)
-            spawnRate = 0.4f;
+        if(difficulty > 6)
+            spawnRate = 0.2f;
 
         player.GetComponent<PlayerController>().moving = false;
 
@@ -187,32 +187,28 @@ public class GameManager : MonoBehaviour
             GameObject fruit;
             int index;
 
-            int randomizer = 5;
+            int randomizer = 4;
 
             if(hard)
             {
-                //25% of items bad if difficulty really high
+                //33% of items bad if difficulty really high
                 if(difficulty > 7)
-                    randomizer = 4;
+                    randomizer = 3;
 
-                //20% of items are bad if difficulty high
+                //25% of items are bad if difficulty high
                 if(difficulty > 4 && Random.Range(1,randomizer) == 1)
                 {
                     //spawn a random BAD thing on a square
-                    index = Random.Range(0, badItems.Length);
-                    fruit = Instantiate(badItems[index], square.transform.position, Quaternion.identity);
+                    //i love i love 0 index arrays
+                    index = Random.Range(0, badItems.Length-1);
+                    fruit = Instantiate(badItems[index], square.transform.position + new Vector3(0,30,0), Quaternion.identity);
                 }
                 else
                 {
                     //spawn a random good thing on a square
-                    index = Random.Range(0, goodItems.Length);
-                    fruit = Instantiate(goodItems[index], square.transform.position, Quaternion.identity);
-           
-                    if(badSquares.Contains(square))
-                    {
-                        //invoke speed coroutine within fruit
-                        fruit.GetComponent<Item>().SpeedCoroutine();
-                    }
+                    index = Random.Range(0, goodItems.Length-1);
+                    fruit = Instantiate(goodItems[index], square.transform.position + new Vector3(0,30,0), Quaternion.identity);
+
                 }
             }
 
@@ -220,8 +216,8 @@ public class GameManager : MonoBehaviour
             else
             {
                 //spawn a random good thing on a square
-                index = Random.Range(0, goodItems.Length);
-                fruit = Instantiate(goodItems[index], square.transform.position, Quaternion.identity);
+                index = Random.Range(0, goodItems.Length-1);
+                fruit = Instantiate(goodItems[index], square.transform.position+ new Vector3(0,30,0), Quaternion.identity);
             }
             //add fruit to the list
             activeItems.Add(fruit);
@@ -230,7 +226,7 @@ public class GameManager : MonoBehaviour
             scanner.transform.position = square.transform.position;
             yield return new WaitForSeconds(spawnRate);
         }
-        yield return new WaitForSeconds(2+difficulty/3);
+        yield return new WaitForSeconds(2+difficulty/4);
         StartCoroutine(LightsOut());
     
     }
@@ -330,9 +326,9 @@ public class GameManager : MonoBehaviour
 
     public void Restart()
     {
-        StartCoroutine(isufmkjcd());
+        StartCoroutine(Isufmkjcd());
     }
-    private IEnumerator isufmkjcd()
+    private IEnumerator Isufmkjcd()
     {
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
@@ -341,6 +337,18 @@ public class GameManager : MonoBehaviour
         gameOver = true;
         score = 0;
         UpdateScore(0);
+
+        //IF the list has stuff on it and they're active, destroy them all and clear the list
+        if(activeItems.Count > 0)
+        {
+            foreach (GameObject go in activeItems)
+                Destroy(go);
+
+            activeItems.Clear();
+        }
+            
+
+            
 
         //difficulty lowered because nextstage adds to it
         difficulty--;
@@ -398,15 +406,12 @@ public class GameManager : MonoBehaviour
         allSquares.Clear();
         nearbySquares.Clear();
         nextSquares.Clear();
-        badSquares.Clear();
 
         //catalog all squares
         foreach (GameObject square in GameObject.FindGameObjectsWithTag("Square"))
         {
             allSquares.Add(square);
-            //northern squares have a sphere collider, find and catalog them
-            if(square.transform.position.z > 3)
-                badSquares.Add(square);
         }
+
     }
 }

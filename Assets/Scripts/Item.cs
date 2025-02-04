@@ -14,13 +14,14 @@ public class Item : MonoBehaviour
 
     private SphereCollider sphere;
     private Mesh mesh;
-    Vector3[] vertices;
-    Color32[] colors;
+    // Vector3[] vertices;
+    // Color32[] colors;
     Color32 black;
     [Header("Current Distance")]
     [SerializeField]private float dist;
     private MeshRenderer rend;
-    bool running = false, falling = false;
+    //bool running = false;
+    bool falling = false;
     public GameObject audioThing;
 
     //init
@@ -43,13 +44,10 @@ public class Item : MonoBehaviour
     void Start()
     {
 
-        //Change y spawn position for each prefab
-        ySpawnPos = 31;
-
-        //get colors and vertices of mesh
-        Vector3[] vertices = mesh.vertices;
-        Color32[] colors = mesh.colors32;
-        black = new Color32(1,1,1,1);
+        // //get colors and vertices of mesh
+        // Vector3[] vertices = mesh.vertices;
+        // Color32[] colors = mesh.colors32;
+        // black = new Color32(1,1,1,1);
 
 
         //add rotation to object, remove gravity and move it high, add mass too
@@ -58,7 +56,6 @@ public class Item : MonoBehaviour
         rb.drag = 0.001f;
         rb.mass = 25;
         rb.useGravity = false;
-        transform.position = new Vector3(transform.position.x, ySpawnPos, transform.position.z);
     }
 
     void FixedUpdate()
@@ -70,23 +67,24 @@ public class Item : MonoBehaviour
     }
 
 
+    // THIS IS BORDERING ON POINTLESS AND ISNT EVEN IMPLEMENTED IN THE BUILD
+    // public void SpeedCoroutine()
+    // {
+    //     if(!running)
+    //         StartCoroutine(AdjustSpeed());
+    //     running = true;
+    // }
 
-    public void SpeedCoroutine()
-    {
-        if(!running)
-            StartCoroutine(AdjustSpeed());
-        running = true;
-    }
+    // //slightly adjust falling drag to give player more time to dodge
+    // //only applies if the fruit is in a northern square
+    // private IEnumerator AdjustSpeed()
+    // {
+    //     yield return new WaitUntil(() => dist < 11);
+    //     rb.drag = 2.5f;
+    //     yield return new WaitForSeconds(0.5f);
+    //     rb.drag = 0.01f;
+    // }
 
-    //slightly adjust falling drag to give player more time to dodge
-    //only applies if the fruit is in a northern square
-    private IEnumerator AdjustSpeed()
-    {
-        yield return new WaitUntil(() => dist < 11);
-        rb.drag = 2.5f;
-        yield return new WaitForSeconds(0.5f);
-        rb.drag = 0.01f;
-    }
 
     //make fruit fall faster for lesser waiting times
     private IEnumerator PushDown()
@@ -95,9 +93,9 @@ public class Item : MonoBehaviour
         //push fruit down 10 times
         for (int i = 0; i < 10; i++)
         {
-            int j = 15;
+            int j = 16;
             if (gameObject.CompareTag("Good Item"))
-                j = 17;
+                j = 20;
             
             rb.AddForce(Vector3.down*j, ForceMode.Impulse);
         }
@@ -157,18 +155,18 @@ public class Item : MonoBehaviour
 
     //change mesh color 
     //todo fix this
-    private IEnumerator Death()
-    {
-        int i = 0;
-        while(colors[i].r != 1)
-            for (i = 0; i < colors.Length; i++)
-            {
-                mesh.Clear(true);
-                mesh.vertices = vertices;
-                Color32.Lerp(colors[i], black, Time.deltaTime * 5);
-            }
-        yield return null;
-    }
+    // private IEnumerator Death()
+    // {
+    //     int i = 0;
+    //     while(colors[i].r != 1)
+    //         for (i = 0; i < colors.Length; i++)
+    //         {
+    //             mesh.Clear(true);
+    //             mesh.vertices = vertices;
+    //             Color32.Lerp(colors[i], black, Time.deltaTime * 5);
+    //         }
+    //     yield return null;
+    // }
 
     //random rotation
     float RandomTorque() {
