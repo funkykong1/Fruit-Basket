@@ -84,7 +84,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(sat > 0)
+    //this makes the map go gray and clouded
+    if(sat > 0)
             sdw = sat/60;
         else
             sdw = 0;
@@ -187,13 +188,13 @@ public class GameManager : MonoBehaviour
             GameObject fruit;
             int index;
 
-            int randomizer = 4;
+            int randomizer = 5;
 
             if(hard)
             {
                 //33% of items bad if difficulty really high
                 if(difficulty > 7)
-                    randomizer = 3;
+                    randomizer = 4;
 
                 //25% of items are bad if difficulty high
                 if(difficulty > 4 && Random.Range(1,randomizer) == 1)
